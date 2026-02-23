@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Bell Shake</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            margin: 0;
+        }
+
+        .notification-bell {
+            font-size: 3rem; /* Icon size */
+            color: #6c757d; /* Grey */
+            cursor: pointer;
+            transform-origin: top center; /* Rotate around the top center */
+        }
+
+        /* Apply animation on hover or via class */
+        .notification-bell:hover,
+        .notification-bell.shaking {
+            animation: bellShake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        /* Define the bell shake animation (rotation) */
+        @keyframes bellShake {
+          0% { transform: rotate(0); }
+          15% { transform: rotate(5deg); }
+          30% { transform: rotate(-5deg); }
+          45% { transform: rotate(4deg); }
+          60% { transform: rotate(-4deg); }
+          75% { transform: rotate(2deg); }
+          85% { transform: rotate(-2deg); }
+          92% { transform: rotate(1deg); }
+          100% { transform: rotate(0); }
+        }
+    </style>
+</head>
+<body>
+    <i class="fas fa-bell notification-bell" id="bell"></i>
+
+    <script>
+        // Optional: Trigger shake with a click
+        const bell = document.getElementById('bell');
+        bell.addEventListener('click', () => {
+            bell.classList.add('shaking');
+            // Remove class after animation
+            setTimeout(() => {
+                bell.classList.remove('shaking');
+            }, 500); // Match animation duration
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Step Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fdfdfd;
+            margin: 0;
+        }
+
+        .multi-step-element {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db; /* Start blue */
+            border-radius: 50%; /* Start circle */
+            animation: sequence 6s ease-in-out infinite; /* Apply sequence */
+        }
+
+        /* Define the multi-step animation sequence */
+        @keyframes sequence {
+            0% { /* Start state */
+                transform: translateX(-100px) rotate(0deg) scale(0.8);
+                background-color: #3498db; /* Blue */
+                border-radius: 50%; /* Circle */
+                opacity: 0.5;
+            }
+            25% { /* Step 1 */
+                transform: translateX(0) rotate(90deg) scale(1.2);
+                background-color: #e74c3c; /* Red */
+                border-radius: 10%; /* Rounded square */
+                opacity: 1;
+            }
+            50% { /* Step 2 */
+                transform: translateX(100px) rotate(180deg) scale(0.8);
+                background-color: #2ecc71; /* Green */
+                border-radius: 50%; /* Circle */
+                opacity: 0.5;
+            }
+            75% { /* Step 3 */
+                transform: translateX(0) rotate(270deg) scale(1.2);
+                background-color: #f1c40f; /* Yellow */
+                border-radius: 10%; /* Rounded square */
+                opacity: 1;
+            }
+            100% { /* End state (matches start for smooth loop) */
+                transform: translateX(-100px) rotate(360deg) scale(0.8);
+                background-color: #3498db; /* Blue */
+                border-radius: 50%; /* Circle */
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="multi-step-element"></div>
+</body>
+</html>

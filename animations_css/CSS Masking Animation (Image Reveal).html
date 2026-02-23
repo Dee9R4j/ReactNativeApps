@@ -1,0 +1,27 @@
+<!-- filepath: /Users/deepraj/programming/webdevprojects/css_mask_animation.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Mask Animation</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #eee; margin: 0; }
+        .masked-element {
+            width: 300px; height: 200px;
+            background: url('https://placehold.co/300x200/ff6347/ffffff?text=Image') center/cover;
+            mask-image: linear-gradient(to right, black 0%, black 50%, transparent 50%, transparent 100%);
+            mask-size: 200% 100%; /* Double width for animation */
+            mask-position: 100% 0; /* Start masked (image hidden) */
+            animation: revealMask 2s ease-in-out forwards;
+            animation-delay: 0.5s;
+        }
+        @keyframes revealMask {
+            to { mask-position: 0% 0; /* End revealed */ }
+        }
+    </style>
+</head>
+<body>
+    <div class="masked-element"></div>
+</body>
+</html>

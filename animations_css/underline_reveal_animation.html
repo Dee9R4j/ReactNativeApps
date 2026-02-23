@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Underline Reveal Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fdfdfe;
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .underline-reveal {
+            display: inline-block; /* Needed for pseudo-element positioning */
+            position: relative; /* Anchor for pseudo-element */
+            color: #333;
+            font-size: 2rem;
+            cursor: pointer;
+            padding-bottom: 5px; /* Space for the underline */
+        }
+
+        /* The underline pseudo-element */
+        .underline-reveal::after {
+            content: '';
+            position: absolute;
+            width: 100%; /* Full width */
+            height: 3px; /* Underline thickness */
+            background-color: #3498db; /* Underline color */
+            bottom: 0;
+            left: 0;
+
+            /* --- Animation Setup --- */
+            transform: scaleX(0); /* Start with zero width (scaled down) */
+            transform-origin: center; /* Scale from the center */
+            transition: transform 0.4s ease-out; /* Animate the transform */
+        }
+
+        /* On hover, scale the underline to full width */
+        .underline-reveal:hover::after {
+            transform: scaleX(1); /* Scale to 100% width */
+        }
+    </style>
+</head>
+<body>
+    <span class="underline-reveal">Hover Over Me</span>
+</body>
+</html>

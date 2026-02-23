@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5 Advanced Pure-CSS 3D Animations</title>
+  <style>
+    /* Global reset & centering */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+    section {
+      flex: 1 1 400px;
+      max-width: 480px;
+      text-align: center;
+    }
+    h2 { margin-bottom: 16px; font-size: 1.2rem; }
+
+    /* 1. Solar System */
+    .solar-scene {
+      position: relative;
+      width: 300px; height: 300px;
+      perspective: 1000px;
+      margin: auto;
+    }
+    .sun {
+      position: absolute; top:50%; left:50%;
+      width: 80px; height: 80px;
+      margin:-40px;
+      border-radius:50%;
+      background: radial-gradient(circle at center, #ff0, #f90);
+      box-shadow: 0 0 30px #f90;
+    }
+    .orbit {
+      position: absolute; top:50%; left:50%;
+      width: 0; height: 0;
+      transform-style: preserve-3d;
+      animation: spinOrbit linear infinite;
+    }
+    .orbit-mercury { animation-duration: 4s; }
+    .orbit-venus   { animation-duration: 8s; }
+    .orbit-earth   { animation-duration: 12s; }
+    @keyframes spinOrbit { to { transform: rotateY(360deg); } }
+
+    .planet {
+      position: absolute; top:-10px; left:-10px;
+      width: 20px; height: 20px;
+      border-radius:50%;
+      transform-style: preserve-3d;
+    }
+    .mercury { background: #aaa; transform: translateX(60px) rotateX(60deg); }
+    .venus   { background: #fa0; transform: translateX(100px) rotateX(45deg); }
+    .earth   { background: #0af; transform: translateX(140px) rotateX(30deg); }
+
+    .moon {
+      position: absolute;
+      width: 6px; height: 6px;
+      top: 7px; left: 7px;
+      border-radius:50%; background: #eee;
+      animation: spinMoon 2s linear infinite;
+      transform-origin: -20px 0 0;
+    }
+    @keyframes spinMoon { to { transform: rotateY(360deg); } }
+
+    /* 2. Water Cube */
+    .water-cube { perspective: 800px; margin: auto; }
+    .cube-outer {
+      width: 200px; height: 200px; position: relative;
+      transform-style: preserve-3d;
+      animation: cubeRotate 10s linear infinite;
+      margin: auto;
+    }
+    .cube-inner,
+    .cube-inner::before,
+    .cube-inner::after {
+      content: '';
+      position: absolute;
+      width: 100%; height: 100%;
+      background: rgba(0,0,255,0.2);
+      border: 4px solid #09f;
+    }
+    .cube-inner  { transform: translateZ(100px); }
+    .cube-inner::before { transform: rotateY(90deg) translateZ(100px); }
+    .cube-inner::after  { transform: rotateX(90deg) translateZ(100px); }
+
+    .wave {
+      position:absolute; bottom:0; left:-50%;
+      width:200%; height:50%;
+      background: rgba(0,150,255,0.5);
+      border-radius: 50%;
+      animation: waveMove linear infinite;
+    }
+    .wave1 { animation-duration: 4s; }
+    .wave2 { animation-duration: 6s; opacity:0.7; }
+
+    @keyframes waveMove {
+      0%   { transform: translateX(0)   translateY(0)    scaleX(1); }
+      50%  { transform: translateX(25%) translateY(-10px) scaleX(1.2); }
+      100% { transform: translateX(50%) translateY(0)     scaleX(1); }
+    }
+    @keyframes cubeRotate { to { transform: rotateX(360deg) rotateY(360deg); } }
+
+    /* 3. Folding Space Tunnel */
+    .tunnel {
+      position: relative;
+      width: 200px; height: 200px;
+      margin: auto;
+      perspective: 600px;
+    }
+    .ring {
+      position: absolute;
+      top: 0; left: 0;
+      width: 200px; height: 200px;
+      border: 3px solid #08f;
+      box-sizing: border-box;
+      transform-origin: center center -300px;
+      animation: fly 3s linear infinite;
+    }
+    .ring:nth-child(1){ animation-delay:-0.6s; }
+    .ring:nth-child(2){ animation-delay:-1.2s; }
+    .ring:nth-child(3){ animation-delay:-1.8s; }
+    .ring:nth-child(4){ animation-delay:-2.4s; }
+    .ring:nth-child(5){ animation-delay:-3.0s; }
+    @keyframes fly {
+      0%   { transform: scale(0.2) translateZ(0); opacity:0; }
+      10%  { opacity:1; }
+      100% { transform: scale(2) translateZ(-600px); opacity:0; }
+    }
+
+    /* 4. 3D Page Flip Gallery */
+    .gallery {
+      width: 200px; height: 300px;
+      margin: auto;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      animation: rotateGallery 20s linear infinite;
+    }
+    .page {
+      position: absolute; width: 100%; height: 100%;
+      top:0; left:0; overflow:hidden;
+      backface-visibility: hidden;
+      transform-origin: center right;
+      transform: rotateY(calc(var(--i) * 90deg)) translateZ(100px);
+    }
+    .page img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    @keyframes rotateGallery { to { transform: rotateY(-360deg); } }
+
+    /* 5. Möbius Strip */
+    .mobius {
+      position: relative;
+      width: 300px; height: 300px;
+      perspective: 800px;
+      transform-style: preserve-3d;
+      animation: mobiusRotate 15s linear infinite;
+      margin: auto;
+    }
+    .slice {
+      --theta: calc(var(--i) * 6deg);
+      position: absolute;
+      width: 200px; height: 20px;
+      top: 50%; left: 50%;
+      margin: -10px 0 0 -100px;
+      background: hsl(calc(var(--i)*6), 80%, 50%);
+      transform:
+        rotateY(var(--theta))
+        translateX(100px)
+        rotateZ(90deg)
+        rotateX(180deg)
+        translateZ(-40px);
+    }
+    @keyframes mobiusRotate { to { transform: rotateX(360deg) rotateY(360deg); } }
+  </style>
+</head>
+<body>
+  <!-- 1. Solar System -->
+  <section>
+    <h2>1. CSS Solar System</h2>
+    <div class="solar-scene">
+      <div class="sun"></div>
+      <div class="orbit orbit-mercury">
+        <div class="planet mercury"></div>
+      </div>
+      <div class="orbit orbit-venus">
+        <div class="planet venus"></div>
+      </div>
+      <div class="orbit orbit-earth">
+        <div class="planet earth">
+          <div class="moon"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Water Cube -->
+  <section>
+    <h2>2. CSS Water Cube</h2>
+    <div class="water-cube">
+      <div class="cube-outer">
+        <div class="cube-inner"></div>
+      </div>
+      <div class="wave wave1"></div>
+      <div class="wave wave2"></div>
+    </div>
+  </section>
+
+  <!-- 3. Folding Space Tunnel -->
+  <section>
+    <h2>3. Folding Space Tunnel</h2>
+    <div class="tunnel">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+  </section>
+
+  <!-- 4. 3D Page Flip Gallery -->
+  <section>
+    <h2>4. 3D Page Flip Gallery</h2>
+    <div class="gallery">
+      <div class="page" style="--i:0">
+        <img src="https://picsum.photos/200/300?random=1" alt="">
+      </div>
+      <div class="page" style="--i:1">
+        <img src="https://picsum.photos/200/300?random=2" alt="">
+      </div>
+      <div class="page" style="--i:2">
+        <img src="https://picsum.photos/200/300?random=3" alt="">
+      </div>
+      <div class="page" style="--i:3">
+        <img src="https://picsum.photos/200/300?random=4" alt="">
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Möbius Strip -->
+  <section>
+    <h2>5. CSS Möbius Strip</h2>
+    <div class="mobius">
+      <!-- 60 slices -->
+      <!-- You can generate these programmatically or copy/paste -->
+      <!-- Here’s a manual loop equivalent: -->
+      <!-- For brevity, show 12 slices; feel free to increase to 60 -->
+      <div class="slice" style="--i:0"></div>
+      <div class="slice" style="--i:5"></div>
+      <div class="slice" style="--i:10"></div>
+      <div class="slice" style="--i:15"></div>
+      <div class="slice" style="--i:20"></div>
+      <div class="slice" style="--i:25"></div>
+      <div class="slice" style="--i:30"></div>
+      <div class="slice" style="--i:35"></div>
+      <div class="slice" style="--i:40"></div>
+      <div class="slice" style="--i:45"></div>
+      <div class="slice" style="--i:50"></div>
+      <div class="slice" style="--i:55"></div>
+    </div>
+  </section>
+</body>
+</html>

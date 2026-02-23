@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skew Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f8ff; /* Alice blue */
+            margin: 0;
+        }
+
+        .skew-element {
+            width: 150px;
+            height: 100px;
+            background-color: #d63384; /* Pink */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            transition: transform 0.3s ease-out; /* Animate the transform */
+            cursor: pointer;
+        }
+
+        /* Skew on hover */
+        .skew-element:hover {
+            /* Skew by 15 degrees horizontally and -5 degrees vertically */
+            transform: skew(15deg, -5deg);
+            /* Try skewX(20deg) or skewY(-10deg) for single axis skew */
+        }
+    </style>
+</head>
+<body>
+    <div class="skew-element">Skew Me!</div>
+</body>
+</html>

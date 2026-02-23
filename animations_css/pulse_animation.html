@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fff0f0;
+            margin: 0;
+        }
+
+        .pulse-element {
+            width: 100px;
+            height: 100px;
+            background-color: #dc3545; /* Red */
+            border-radius: 50%; /* Make it a circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1rem;
+            /* Apply animation */
+            /* infinite: makes the animation loop forever */
+            /* alternate: reverses direction each cycle */
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        /* Define the pulse animation */
+        @keyframes pulse {
+            from {
+                transform: scale(1); /* Normal size */
+                opacity: 1;
+            }
+            to {
+                transform: scale(1.2); /* Slightly larger size */
+                opacity: 0.7; /* Slightly faded */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pulse-element">Pulse</div>
+</body>
+</html>

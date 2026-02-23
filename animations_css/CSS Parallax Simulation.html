@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Parallax Simulation</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 200vh; /* Make body scrollable */
+            background-color: #eee; /* Fallback background */
+        }
+
+        .parallax-container {
+            height: 100vh; /* Full viewport height */
+            overflow-x: hidden; /* Hide horizontal scroll */
+            overflow-y: auto; /* Allow vertical scroll */
+            perspective: 1px; /* The magic: perspective value */
+            perspective-origin: center center;
+            position: relative; /* Needed for absolute positioning of layers */
+        }
+
+        .parallax-layer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 3rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Background Layer (moves slower) */
+        .parallax-layer--back {
+            /* Move back in Z-axis and scale up to compensate */
+            /* The further back (larger negative translateZ), the slower it scrolls */
+            transform: translateZ(-1px) scale(2);
+            background: url('https://placehold.co/1920x1080/5a5a5a/ffffff?text=Background+Layer') center center / cover no-repeat fixed; /* Fixed background helps */
+            z-index: -2; /* Place behind other layers */
+            height: 100vh; /* Ensure it covers the viewport */
+        }
+
+        /* Base Layer (normal speed) */
+        .parallax-layer--base {
+            transform: translateZ(0); /* No Z translation */
+            background-color: rgba(0, 123, 255, 0.3); /* Semi-transparent overlay */
+            z-index: -1;
+            height: 80vh; /* Shorter than container */
+            top: 10vh; /* Position it */
+        }
+
+        /* Foreground Layer (moves faster - doesn't work well with pure CSS) */
+        /* Pure CSS parallax works best making background layers move slower */
+        /* Foreground content should just be normal content */
+        .content-section {
+            height: 100vh; /* Another section of content */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            font-size: 2rem;
+            position: relative; /* Ensure it's above parallax layers */
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="parallax-container">
+        <div class="parallax-layer parallax-layer--back">
+            </div>
+        <div class="parallax-layer parallax-layer--base">
+            Base Layer Content (Scrolls Normally)
+        </div>
+        </div>
+
+    <div class="content-section">
+        Regular Content Section Below Parallax
+    </div>
+
+</body>
+</html>

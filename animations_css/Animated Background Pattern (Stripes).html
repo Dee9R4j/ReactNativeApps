@@ -1,0 +1,27 @@
+<!-- filepath: /Users/deepraj/programming/webdevprojects/animated_bg_pattern.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Background Pattern</title>
+    <style>
+        body { min-height: 100vh; margin: 0;
+            background: repeating-linear-gradient(
+                45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px
+            );
+            background-size: 200% 200%; /* Make size larger than viewport */
+            animation: moveStripes 10s linear infinite;
+        }
+        @keyframes moveStripes {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        /* Content styling for visibility */
+        .content { display: flex; justify-content: center; align-items: center; height: 100vh; color: white; font-size: 2rem; text-shadow: 1px 1px 2px black; }
+    </style>
+</head>
+<body>
+    <div class="content">Moving Stripes</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!-- filepath: /Users/deepraj/programming/webdevprojects/infinite_text_scroll.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Text Scroll</title>
+    <style>
+        body { display: flex; align-items: center; min-height: 100vh; background-color: #fff8e1; margin: 0; overflow-x: hidden; }
+        .marquee { width: 100%; background-color: #ffca28; padding: 10px 0; white-space: nowrap; box-sizing: border-box; }
+        .marquee span { display: inline-block; padding-left: 100%; /* Start off screen */ font-size: 1.5rem; color: #333; animation: marquee 15s linear infinite; }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); } /* Move fully across */
+        }
+    </style>
+</head>
+<body>
+    <div class="marquee">
+        <span>This is some infinitely scrolling text... Repeating... Over and over... &nbsp;</span>
+        <!-- Repeat span content or add more spans for seamless loop -->
+        <span>This is some infinitely scrolling text... Repeating... Over and over... &nbsp;</span>
+    </div>
+</body>
+</html>

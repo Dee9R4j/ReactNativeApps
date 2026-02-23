@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Text Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #282c34; /* Dark background */
+            font-family: 'Courier New', Courier, monospace; /* Monospace font for typing effect */
+            margin: 0;
+        }
+
+        .typing-container {
+            display: inline-block; /* Fit content width */
+            overflow: hidden; /* Hide the text initially */
+            border-right: .15em solid orange; /* The typewriter cursor */
+            white-space: nowrap; /* Keep text on a single line */
+            margin: 0 auto; /* Center the container (optional) */
+            letter-spacing: .1em; /* Adjust spacing */
+            font-size: 2rem; /* Adjust font size */
+            color: #61dafb; /* Light blue text color */
+
+            /* Animation properties */
+            /* 1. typing: name of the @keyframes rule */
+            /* 2. 3.5s: duration of the animation */
+            /* 3. steps(30, end): timing function
+                  - 30: number of steps (should match character count + spaces)
+                  - end: steps occur at the end of each interval */
+            /* 4. 1: iteration count (1 means play once) */
+            /* 5. forwards: retain the style of the final keyframe */
+            animation:
+                typing 3.5s steps(30, end) 1 forwards,
+                /* Blinking cursor animation */
+                blink-caret .75s step-end infinite;
+        }
+
+        /* The typing effect */
+        @keyframes typing {
+            from { width: 0 } /* Start with zero width */
+            to { width: 100% } /* End with full width */
+        }
+
+        /* The typewriter cursor blinking effect */
+        @keyframes blink-caret {
+            from, to { border-color: transparent } /* Make cursor transparent */
+            50% { border-color: orange; } /* Make cursor visible */
+        }
+
+        /* Responsive font size */
+        @media (max-width: 600px) {
+            .typing-container {
+                font-size: 1.5rem;
+                letter-spacing: .05em;
+                /* Adjust steps if text content changes for smaller screens */
+                /* animation: typing 3.5s steps(30, end) 1 forwards, blink-caret .75s step-end infinite; */
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="typing-container">Hello, World! Welcome...</div>
+
+</body>
+</html>

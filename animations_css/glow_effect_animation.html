@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow Effect Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #2c3e50; /* Dark Blue/Grey */
+            margin: 0;
+        }
+
+        .glow-element {
+            width: 130px;
+            height: 130px;
+            background-color: #ffffff; /* White */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2c3e50;
+            font-weight: bold;
+            /* Apply animation */
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        /* Define the glow animation */
+        @keyframes glow {
+            from {
+                /* x-offset, y-offset, blur-radius, spread-radius, color */
+                box-shadow: 0 0 5px #ffffff, /* Inner white glow */
+                            0 0 10px #ffffff,
+                            0 0 15px #007bff, /* Outer blue glow */
+                            0 0 20px #007bff;
+            }
+            to {
+                box-shadow: 0 0 10px #ffffff,
+                            0 0 20px #ffffff,
+                            0 0 30px #007bff,
+                            0 0 40px #007bff; /* Increased glow */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-element">Glow</div>
+</body>
+</html>

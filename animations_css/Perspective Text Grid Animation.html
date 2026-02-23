@@ -1,0 +1,33 @@
+<!-- filepath: /Users/deepraj/programming/webdevprojects/perspective_text_grid.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perspective Text Grid</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #000; margin: 0; perspective: 500px; /* Apply perspective to body */ }
+        .grid-container {
+            transform-style: preserve-3d;
+            animation: rotateGrid 20s linear infinite;
+            transform: rotateX(60deg); /* Initial tilt */
+        }
+        .grid-row { display: flex; }
+        .grid-item { width: 80px; height: 40px; margin: 2px; background: rgba(0, 255, 0, 0.2); border: 1px solid lime; color: lime; font-family: monospace; font-size: 0.8rem; display: flex; justify-content: center; align-items: center; }
+        @keyframes rotateGrid { to { transform: rotateX(60deg) rotateZ(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+        <div class="grid-row">
+            <div class="grid-item">TEXT</div><div class="grid-item">GRID</div><div class="grid-item">ANIM</div>
+        </div>
+        <div class="grid-row">
+            <div class="grid-item">IN 3D</div><div class="grid-item">SPACE</div><div class="grid-item">EFFECT</div>
+        </div>
+         <div class="grid-row">
+            <div class="grid-item">CSS</div><div class="grid-item">ONLY</div><div class="grid-item">COOL!</div>
+        </div>
+    </div>
+</body>
+</html>

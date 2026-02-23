@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Gradient Border</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #222; /* Dark background */
+            margin: 0;
+        }
+
+        .gradient-border-box {
+            width: 250px;
+            height: 150px;
+            padding: 20px; /* Inner content padding */
+            position: relative; /* Needed for pseudo-element */
+            background-color: #333; /* Inner background color */
+            color: #fff;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 1.2rem;
+            overflow: hidden; /* Hide overflowing pseudo-element */
+            z-index: 1; /* Ensure content is above pseudo-element */
+        }
+
+        /* Pseudo-element creates the border */
+        .gradient-border-box::before {
+            content: '';
+            position: absolute;
+            top: -4px; /* Offset slightly larger than border width */
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff); /* Gradient */
+            background-size: 400% 100%; /* Make background wider for animation */
+            border-radius: inherit; /* Match parent's border radius */
+            z-index: -1; /* Place behind the content */
+            animation: rotateGradient 4s linear infinite; /* Animate background position */
+        }
+
+        /* Define the gradient rotation animation */
+        @keyframes rotateGradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-border-box">
+        Animated Gradient Border
+    </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotate Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e9ecef;
+            margin: 0;
+        }
+
+        .rotate-element {
+            width: 120px;
+            height: 120px;
+            background-color: #6f42c1; /* Purple */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            /* Apply animation */
+            /* linear: constant speed */
+            animation: rotate 3s linear infinite;
+        }
+
+        /* Define the rotate animation */
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg); /* Start angle */
+            }
+            to {
+                transform: rotate(360deg); /* End angle (full circle) */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="rotate-element">Rotate</div>
+</body>
+</html>

@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- Updated Title -->
+  <title>Enhanced Scroll Animation Effects (v2)</title>
+
+  <style>
+    /* ======================================================
+       VARIABLES & RESET
+       ------------------------------------------------------
+       Define animation timing once, apply to all transitions.
+    ====================================================== */
+    :root {
+      --anim-duration: 0.8s;           /* Base duration for all animations */
+      --anim-timing: ease-out;         /* Easing function for all animations */
+      scroll-padding-top: 20px;        /* Ensure space when snapping/linking */
+    }
+
+    /* Reset margins, set background & font */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Broader font stack */
+      background: #f4f7f6;
+      color: #333;
+      overflow-x: hidden;              /* Prevent horizontal scrollbars caused by transforms */
+    }
+
+    /* Headings styling */
+    h1, h2, h3 {
+      text-align: center;
+      color: #1a535c;
+      margin-bottom: 1rem; /* Use rem for scalable spacing */
+      margin-top: 0; /* Reset top margin for consistency */
+    }
+    h1 {
+      margin-top: 2rem;
+      color: #0b2f33;
+      font-size: 2.5rem; /* Responsive font size */
+    }
+    h2 {
+        font-size: 1.8rem;
+        margin-top: 1rem;
+    }
+
+    /* Section setup: spacing, alignment, and visual separators */
+    section {
+      padding: 80px 20px; /* Increased padding */
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px dashed #ddd;
+      position: relative;
+      overflow: hidden; /* Keep hidden, important for many effects */
+    }
+    section:nth-child(even) {
+      background: #e8eeed;
+    }
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    /* Container for demo content boxes */
+    .content-box {
+      max-width: 600px;
+      width: 90%;
+      background: #fff;
+      padding: 30px; /* Increased padding */
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      text-align: center;
+      margin: 20px auto;
+    }
+    .content-box p { /* Add margin to paragraphs inside boxes */
+        margin-bottom: 0;
+        line-height: 1.7; /* Improved readability */
+    }
+
+    /* Helper for explanatory text below demos */
+    .explanation {
+        font-size: 0.9rem;
+        color: #555;
+        margin-top: 15px;
+        font-style: italic;
+    }
+
+    /* ======================================================
+       SCROLL PROGRESS BAR (Top of Page)
+       ------------------------------------------------------
+       Fixed bar, width updated via JavaScript on scroll.
+    ====================================================== */
+    #scroll-progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 6px;
+      background: linear-gradient(to right, #ff6f61, #de4444);
+      width: 0;
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    /* ======================================================
+       GENERIC ANIMATION CLASS & VISIBILITY TOGGLE
+       ------------------------------------------------------
+       Base state: invisible + potentially transformed.
+       .is-visible class (added by JS) toggles opacity and resets transforms/filters.
+    ====================================================== */
+    .scroll-animate {
+      opacity: 0;
+      transition:
+        opacity var(--anim-duration) var(--anim-timing),
+        transform var(--anim-duration) var(--anim-timing),
+        filter var(--anim-duration) var(--anim-timing),
+        clip-path var(--anim-duration) var(--anim-timing);
+      will-change: opacity, transform, filter, clip-path;
+    }
+    .is-visible {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+      /* Note: clip-path is NOT reset globally here, as specific effects might need it */
+      /* clip-path: none !important; */ /* Removed global reset */
+    }
+
+    /* ======================================================
+       SPECIFIC EFFECT CLASSES (Initial States)
+       ------------------------------------------------------
+    ====================================================== */
+    /* 1. Fade-in */
+    .fade-in { transform: translateY(20px); }
+
+    /* 2. Slide-in */
+    .slide-in-left  { transform: translateX(-100px); }
+    .slide-in-right { transform: translateX(100px); }
+    .slide-in-up    { transform: translateY(100px); }
+    .slide-in-down  { transform: translateY(-100px); }
+
+    /* 3. Scale-up */
+    .scale-up { transform: scale(0.8); }
+
+    /* 5. Rotate-in */
+    .rotate-in { transform: rotate(-45deg) scale(0.8); }
+
+    /* 6. Flip-in */
+    .flip-in-x { transform: rotateX(-90deg); backface-visibility: hidden; }
+    .flip-in-y { transform: rotateY(-90deg); backface-visibility: hidden; }
+    /* Add .is-visible rule specifically for flip to reset rotation */
+    .flip-in-x.is-visible, .flip-in-y.is-visible {
+        transform: rotateX(0) rotateY(0) !important; /* Ensure flip resets */
+    }
+
+    /* ======================================================
+       FIXED EFFECT 7: PARALLAX BACKGROUND (CSS 3D Transform)
+       ------------------------------------------------------
+       Apply perspective to the section, transform the ::before pseudo-element.
+    ====================================================== */
+    .parallax-section {
+      /* perspective needs to be on the parent scrolling container (the section itself) */
+      perspective: 100px; /* Creates 3D space. Adjust value to change depth effect */
+      /* Other existing styles like min-height, display, align, justify, color, text-shadow remain */
+      position: relative;
+      min-height: 70vh; /* Increased height */
+      overflow: hidden; /* Keep overflow hidden */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+    .parallax-section::before {
+      content: '';
+      position: absolute;
+      /* Ensure it covers the section completely, even when scaled */
+      top: -20%; left: -20%; right: -20%; bottom: -20%; /* Overextend bounds */
+      background-image: url('https://via.placeholder.com/1920x1080/5a7d7c/ffffff.png?text=Parallax+3D'); /* New placeholder */
+      background-size: cover;
+      background-position: center;
+      /* The core parallax effect: Move pseudo-element back in Z space and scale up */
+      transform: translateZ(-80px) scale(1.8); /* Adjusted values for more noticeable effect */
+      z-index: -1;
+      will-change: transform;
+      /* Smoothness improvement - ensure no background-attachment: fixed */
+      background-attachment: scroll; /* Default, but ensures fixed isn't inherited */
+    }
+    /* Ensure content inside parallax section is visible */
+    .parallax-section > * {
+        position: relative; /* Ensure content is layered above ::before */
+        z-index: 1;
+    }
+
+    /* 8. Sticky Element Container */
+    .sticky-container {
+      position: relative;
+      height: 150vh;
+      width: 90%;
+      max-width: 700px;
+      border: 2px dashed #ff6f61;
+      margin-top: 30px;
+      padding-top: 10px;
+    }
+    .sticky-element {
+      position: sticky;
+      top: 20px;
+      background: #ff6f61;
+      color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      margin: 0 auto 20px auto;
+      width: 80%;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+    .sticky-container p { padding: 0 20px; margin-top: 10px; }
+
+    /* ======================================================
+       FIXED EFFECT 10: COLOR CHANGE (Gradient Wipe)
+       ------------------------------------------------------
+       Ensure transform-origin is left for scaleX animation.
+    ====================================================== */
+    .color-change-section {
+      position: relative;
+      background: #f0f0f0;
+      transition: background 0.5s ease-in-out;
+      z-index: 0;
+      overflow: hidden; /* Add overflow hidden */
+    }
+    .color-change-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(45deg, #d1e8e2 0%, #a3c1ad 100%);
+      transform: scaleX(0);
+      transform-origin: left; /* Explicitly set origin to left */
+      transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+      z-index: -1;
+    }
+    .color-change-section.is-visible::before {
+      transform: scaleX(1);
+    }
+    .color-change-section > * { position: relative; z-index: 1; }
+
+    /* ======================================================
+       FIXED EFFECT 11: IMAGE REVEAL (Clip-Path)
+       ------------------------------------------------------
+       Corrected initial clip-path state.
+    ====================================================== */
+    .image-reveal-container {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      background: #eee; /* Lighter placeholder background */
+      overflow: hidden; /* Keep overflow hidden */
+    }
+    .image-reveal-container::before { /* The colored overlay */
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #4ecdc4;
+      /* Corrected: Start clipped from the left, revealing from left to right */
+      clip-path: inset(0 100% 0 0); /* top right bottom left */
+      transition: clip-path 1.2s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+      z-index: 1;
+    }
+    .image-reveal-container.is-visible::before {
+      clip-path: inset(0 0 0 0); /* Fully revealed (no clipping) */
+    }
+    .image-reveal-container::after { /* The actual image */
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url('https://via.placeholder.com/300x200/7a9d96/ffffff.png?text=Revealed!') center/cover no-repeat; /* Updated placeholder */
+      opacity: 0;
+      transition: opacity 0.6s ease-out 0.4s; /* Fade in after reveal starts */
+      z-index: 0;
+    }
+    .image-reveal-container.is-visible::after {
+      opacity: 1;
+    }
+
+    /* 12. Lazy-load simulated fade */
+    .lazy-load-effect { transform: translateY(30px); }
+
+    /* 13. Staggered children */
+    .stagger-container { display: inline-block; }
+    .stagger-item {
+      opacity: 0; transform: translateY(30px);
+      margin: 8px 0; padding: 10px; background: #fff;
+      border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: opacity 0.6s var(--anim-timing), transform 0.6s var(--anim-timing);
+      will-change: opacity, transform;
+    }
+    .stagger-container.is-visible .stagger-item { opacity: 1; transform: translateY(0); }
+    .stagger-container.is-visible .stagger-item:nth-child(1) { transition-delay: 0.1s; }
+    .stagger-container.is-visible .stagger-item:nth-child(2) { transition-delay: 0.2s; }
+    .stagger-container.is-visible .stagger-item:nth-child(3) { transition-delay: 0.3s; }
+    .stagger-container.is-visible .stagger-item:nth-child(4) { transition-delay: 0.4s; }
+
+    /* ======================================================
+       FIXED EFFECT 14: LINE REVEAL (Wipe + Text Up)
+       ------------------------------------------------------
+       Corrected transforms and ensured visibility.
+    ====================================================== */
+    .line-reveal {
+      position: relative;
+      overflow: hidden; /* Crucial: hides text/wipes initially */
+      display: block; /* Use block for easier layout */
+      margin-bottom: 0.5em; /* Add some space below */
+    }
+    /* The colored line that wipes across */
+    .line-reveal::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, #ff6f61 0%, #de4444 100%);
+      transform: scaleX(0); /* Start scaled to zero width */
+      transform-origin: left; /* Wipe from left */
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1) 0.1s; /* Added slight delay */
+      z-index: 2;
+    }
+    /* The background wipe that hides the text */
+    .line-reveal::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      /* Match the parent section background dynamically if possible, or use a common one */
+      background: inherit; /* Try inheriting background */
+       /* Fallback background if inherit doesn't work well */
+      /* background: #f4f7f6; */
+      transform: translateX(0); /* Start covering the text */
+      transform-origin: left; /* Moves from left to right */
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1); /* No delay */
+      z-index: 1;
+    }
+    /* When visible, animate wipes */
+    .line-reveal.is-visible::before {
+      transform: scaleX(1); /* Line wipes across */
+    }
+     .line-reveal.is-visible::after {
+      transform: translateX(101%); /* Background wipe moves out right */
+    }
+    /* The actual text content */
+    .line-reveal span {
+      display: block;
+      opacity: 0;
+      transform: translateY(1em);
+      /* Animate text slightly after the wipes have finished */
+      transition: opacity 0.6s ease-out 0.5s, transform 0.6s ease-out 0.5s;
+      will-change: opacity, transform;
+    }
+    .line-reveal.is-visible span {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 15. Shape transform */
+    .shape-transform {
+      width: 100px; height: 100px; background: #ff6b6b; border-radius: 50%;
+      opacity: 0; transform: scale(0.5) rotate(-90deg);
+      transition: opacity var(--anim-duration) var(--anim-timing),
+                  transform var(--anim-duration) var(--anim-timing),
+                  border-radius 1s ease-in-out;
+      will-change: opacity, transform, border-radius;
+    }
+    .shape-transform.is-visible {
+      opacity: 1; transform: scale(1) rotate(0); border-radius: 10px;
+    }
+
+    /* 16. Blur in */
+    .blur-in { filter: blur(10px); transform: translateY(20px); }
+
+    /* 17. Skew in */
+    .skew-in { transform: skewX(-20deg) scaleX(0.9); }
+
+    /* 18. Scroll snapping container */
+    .scroll-snap-container {
+      height: 80vh; overflow-y: scroll; scroll-snap-type: y mandatory;
+      border: 3px solid #1a535c; border-radius: 8px;
+      width: 95%; max-width: 700px; margin-top: 20px;
+    }
+    .scroll-snap-section {
+      height: 80vh; scroll-snap-align: start;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: #fff; text-align: center;
+    }
+    .scroll-snap-section:nth-child(1){background:#4ecdc4;}
+    .scroll-snap-section:nth-child(2){background:#ff6b6b;}
+    .scroll-snap-section:nth-child(3){background:#ffe66d;color:#333;}
+    .scroll-snap-section:nth-child(4){background:#1a535c;}
+
+    /* ======================================================
+       ENHANCED EFFECT 19: TIMELINE ANIMATION
+       ------------------------------------------------------
+       Improved styling and scroll-linked animations.
+    ====================================================== */
+    .timeline-section { /* Add a wrapper section if needed for scroll calculations */
+        /* Styles from regular section apply */
+    }
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      width: 90%; /* Use percentage for responsiveness */
+      margin: 50px auto;
+      padding: 40px 0;
+      /* CSS variable for scroll progress, updated by JS */
+      --timeline-progress: 0;
+    }
+    /* The main vertical timeline bar - height controlled by JS */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 40px; /* Adjusted position */
+      top: 0;
+      /* Height calculated based on scroll progress via JS */
+      height: calc(var(--timeline-progress) * 1%);
+      width: 4px;
+      background: #ff6b6b;
+      /* Smooth transition for height changes */
+      transition: height 0.1s linear; /* Faster, linear transition for scroll */
+      z-index: 1;
+    }
+    .timeline-item {
+      display: flex; /* Use flex for better alignment */
+      align-items: center; /* Vertically center bullet with content */
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) 0.1s, /* Delay opacity/transform */
+                  transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) 0.1s,
+                  scale 0.3s ease-out; /* Add transition for scale */
+      padding: 0 0 0 80px; /* Left padding to make space for bullet/line */
+      position: relative;
+      margin: 50px 0; /* Increased vertical spacing */
+      min-height: 80px; /* Ensure minimum height */
+      will-change: opacity, transform, scale;
+    }
+    /* The bullet point on the timeline */
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 29px; /* Position bullet center (40px - 24px/2) */
+      /* Center vertically relative to the item's potential height */
+      top: 50%;
+      transform: translateY(-50%) scale(0); /* Start scaled down */
+      width: 24px;
+      height: 24px;
+      background: #fff;
+      border: 4px solid #ff6b6b;
+      border-radius: 50%;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s; /* Delay and bounce */
+      z-index: 3; /* Above line and connector */
+    }
+    /* Horizontal connector line - Removed ::after, integrated with padding */
+
+    /* Content wrapper inside timeline item */
+    .timeline-item-content {
+        background: rgba(255, 255, 255, 0.95); /* Slightly less transparent */
+        border-radius: 8px;
+        padding: 20px 25px; /* Padding inside content box */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Adjusted shadow */
+        width: 100%; /* Take full width within the padded area */
+    }
+
+    /* When timeline item is visible (via Intersection Observer) */
+    .timeline-item.is-visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .timeline-item.is-visible::before { /* Animate bullet */
+      transform: translateY(-50%) scale(1);
+    }
+
+    /* Additional class added by JS when item is near viewport center */
+    .timeline-item.is-centered {
+        transform: scale(1.03); /* Subtle scale up */
+        /* transition is already defined on .timeline-item */
+    }
+
+    /* Timeline item content styling */
+    .timeline-item-content h3 {
+      color: #ff6b6b;
+      margin-top: 0;
+      margin-bottom: 8px;
+      text-align: left;
+      font-size: 1.3rem;
+    }
+     .timeline-item-content p {
+      margin-bottom: 0;
+      text-align: left;
+      font-size: 0.95rem;
+      color: #444; /* Darker text */
+      line-height: 1.6;
+    }
+
+    /* 20. Combined Fade + Slide Up */
+    /* Uses .fade-in style */
+
+  </style>
+</head>
+<body>
+
+  <!-- SCROLL PROGRESS BAR ELEMENT -->
+  <div id="scroll-progress-bar"></div>
+
+  <!-- PAGE HEADER -->
+  <h1>Enhanced Scroll Animation Effects (v2)</h1>
+  <p style="text-align:center; margin-bottom:40px;">
+    Scroll down to see effects (Fixes for 7, 10, 14; Enhanced 19).
+  </p>
+
+  <!-- 1. Fade-in -->
+  <section>
+    <h2>1. Fade In</h2>
+    <div class="content-box scroll-animate fade-in" data-delay="0">
+      <p>Fades in and subtly slides up.</p>
+    </div>
+  </section>
+
+  <!-- 2. Slide-in (Left, Right, Up, Down) -->
+  <section>
+    <h2>2. Slide In</h2>
+    <div class="content-box scroll-animate slide-in-left"  data-delay="0">Slides From Left</div>
+    <div class="content-box scroll-animate slide-in-right" data-delay="0.1">Slides From Right</div>
+    <div class="content-box scroll-animate slide-in-up"    data-delay="0.2">Slides From Bottom (Up)</div>
+    <div class="content-box scroll-animate slide-in-down"  data-delay="0.3">Slides From Top (Down)</div>
+  </section>
+
+  <!-- 3. Scale-up -->
+  <section>
+    <h2>3. Scale Up</h2>
+    <div class="content-box scroll-animate scale-up" data-delay="0">
+      <p>Scales up into place.</p>
+    </div>
+  </section>
+
+  <!-- 4. Hover scale-down (static example) -->
+  <section>
+    <h2>4. Scale Down (Hover)</h2>
+    <div class="content-box" style="transition: transform 0.3s ease-in-out; transform-origin:center; cursor:pointer;"
+         onmouseover="this.style.transform='scale(0.95)';"
+         onmouseout="this.style.transform='scale(1)';">
+      <p>Hover me to scale down.</p>
+    </div>
+    <p class="explanation">(Static hover effect for demonstration)</p>
+  </section>
+
+  <!-- 5. Rotate-in -->
+  <section>
+    <h2>5. Rotate In</h2>
+    <div class="content-box scroll-animate rotate-in" data-delay="0">
+      <p>Rotates & scales into view.</p>
+    </div>
+  </section>
+
+  <!-- 6. Flip-in -->
+  <section>
+    <h2>6. Flip In</h2>
+    <div class="content-box scroll-animate flip-in-x" data-delay="0">
+      <p>Flips in on the X axis.</p>
+    </div>
+    <div class="content-box scroll-animate flip-in-y" data-delay="0.2">
+      <p>Flips in on the Y axis.</p>
+    </div>
+  </section>
+
+  <!-- 7. FIXED Parallax Background -->
+  <section class="parallax-section">
+    <h2>7. Parallax (Fixed CSS 3D)</h2>
+  </section>
+
+  <!-- 8. Sticky Element -->
+  <section>
+    <h2>8. Sticky Element</h2>
+    <p class="explanation">(Scroll inside the dashed box below)</p>
+    <div class="sticky-container">
+      <div class="sticky-element">I stick as you scroll!</div>
+      <p>Content below the sticky element...</p>
+      <p>Keep scrolling inside this box...</p>
+      <p>More content...</p>
+      <p>Even more content to ensure scrolling...</p>
+      <p>Almost at the end of the sticky container...</p>
+    </div>
+  </section>
+
+  <!-- 9. Progress bar -->
+   <section>
+    <h2>9. Scroll Progress Bar</h2>
+    <div class="content-box">
+      <p>The progress bar is fixed at the very top of the page, showing overall scroll progress.</p>
+    </div>
+  </section>
+
+  <!-- 10. FIXED Section color change (Gradient Wipe) -->
+  <section class="scroll-animate color-change-section" data-delay="0">
+    <h2>10. Color Change (Fixed Wipe)</h2>
+    <div class="content-box">
+      <p>This section’s background changes via a gradient wipe from left to right.</p>
+    </div>
+  </section>
+
+  <!-- 11. FIXED Image reveal (Clip-Path) -->
+  <section>
+    <h2>11. Image Reveal (Fixed Clip-Path)</h2>
+    <div class="content-box scroll-animate image-reveal-container" data-delay="0.1">
+      {/* Content is the ::after pseudo-element */}
+    </div>
+    <p class="explanation">(Reveals image using clip-path animation)</p>
+  </section>
+
+  <!-- 12. Lazy-load fade -->
+  <section>
+    <h2>12. Lazy Load Effect</h2>
+    <div class="content-box scroll-animate lazy-load-effect" data-delay="0">
+      <p>Fades in as if “loading” late.</p>
+    </div>
+    <p class="explanation">(Simulates lazy loading with a fade+slide)</p>
+  </section>
+
+  <!-- 13. Staggered animation -->
+  <section>
+    <h2>13. Staggered Animation</h2>
+    <div class="content-box scroll-animate stagger-container" data-delay="0">
+      <div class="stagger-item">Staggered Item 1</div>
+      <div class="stagger-item">Staggered Item 2</div>
+      <div class="stagger-item">Staggered Item 3</div>
+      <div class="stagger-item">Staggered Item 4</div>
+    </div>
+  </section>
+
+  <!-- 14. FIXED Line reveal -->
+  <section>
+    <h2>14. Line Reveal (Fixed)</h2>
+    <h3 class="scroll-animate line-reveal" data-delay="0">
+      <span>Revealing Headline Text</span>
+    </h3>
+    <div class="scroll-animate line-reveal" data-delay="0.3">
+      <span>A paragraph revealing line by line.</span>
+    </div>
+    <div class="scroll-animate line-reveal" data-delay="0.6">
+      <span>Another line for demonstration.</span>
+    </div>
+  </section>
+
+  <!-- 15. Shape transform -->
+  <section>
+    <h2>15. Shape Transform</h2>
+    <div class="scroll-animate shape-transform" data-delay="0"></div>
+    <p class="explanation">(Circle to Rounded Square)</p>
+  </section>
+
+  <!-- 16. Blur-in -->
+  <section>
+    <h2>16. Blur In</h2>
+    <div class="content-box scroll-animate blur-in" data-delay="0">
+      <p>This content starts blurred and slides up.</p>
+    </div>
+  </section>
+
+  <!-- 17. Skew-in -->
+  <section>
+    <h2>17. Skew In</h2>
+    <div class="content-box scroll-animate skew-in" data-delay="0">
+      <p>Skews into place.</p>
+    </div>
+  </section>
+
+  <!-- 18. Scroll snapping -->
+  <section>
+    <h2>18. Scroll Snapping</h2>
+    <p class="explanation">(Scroll inside the box below)</p>
+    <div class="scroll-snap-container">
+      <div class="scroll-snap-section">Snap Section 1</div>
+      <div class="scroll-snap-section">Snap Section 2</div>
+      <div class="scroll-snap-section">Snap Section 3</div>
+      <div class="scroll-snap-section">Snap Section 4</div>
+    </div>
+  </section>
+
+  <!-- 19. ENHANCED TIMELINE ANIMATION -->
+  <section class="timeline-section"> {/* Added wrapper class */}
+    <h2>19. Enhanced Timeline (Scroll-Linked)</h2>
+    <div class="timeline">
+      {/* JS calculates scroll progress within this section */}
+      <div class="timeline-item scroll-animate" data-delay="0.1"> {/* Stagger delay */}
+         <div class="timeline-item-content">
+            <h3>2023 - The Beginning</h3>
+            <p>Project planning, extensive research, and initial concept validation phase.</p>
+         </div>
+      </div>
+      <div class="timeline-item scroll-animate" data-delay="0.2"> {/* Stagger delay */}
+          <div class="timeline-item-content">
+            <h3>2024 - Development</h3>
+            <p>Core feature development started. Building the foundation and key functionalities.</p>
+          </div>
+      </div>
+      <div class="timeline-item scroll-animate" data-delay="0.3"> {/* Stagger delay */}
+          <div class="timeline-item-content">
+            <h3>Mid-2024 - Alpha</h3>
+            <p>Internal testing and refinement based on early feedback.</p>
+          </div>
+      </div>
+       <div class="timeline-item scroll-animate" data-delay="0.4"> {/* Stagger delay */}
+          <div class="timeline-item-content">
+            <h3>Late 2024 - Beta Phase</h3>
+            <p>Wider release for beta testing, focusing on user experience and bug fixes.</p>
+          </div>
+      </div>
+      <div class="timeline-item scroll-animate" data-delay="0.5"> {/* Stagger delay */}
+         <div class="timeline-item-content">
+            <h3>2025 - Launch & Iterate</h3>
+            <p>Official launch followed by continuous improvement based on user data.</p>
+         </div>
+      </div>
+    </div>
+     <p class="explanation">(Vertical line grows with scroll; items scale near center)</p>
+  </section>
+
+  <!-- 20. Combined Fade + Slide Up -->
+  <section>
+    <h2>20. Combined Fade + Slide Up</h2>
+    <div class="content-box scroll-animate fade-in" data-delay="0"> <!-- Reuses fade-in style -->
+      <p>This element both fades in and slides up simultaneously.</p>
+    </div>
+  </section>
+
+  <!-- END SPACER -->
+  <section style="min-height:60vh; border-bottom: none;">
+    <h2>End of Demo</h2>
+  </section>
+
+  <!-- ======================================================
+     JAVASCRIPT: OBSERVER, PROGRESS BAR, TIMELINE SCROLL LOGIC
+  ====================================================== -->
+  <script>
+    // Wrap all JS in DOMContentLoaded to ensure elements exist
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- Selectors ---
+      const animatedEls = document.querySelectorAll('.scroll-animate');
+      const progressBar = document.getElementById('scroll-progress-bar');
+      const timeline = document.querySelector('.timeline');
+      const timelineItems = document.querySelectorAll('.timeline-item');
+      const timelineSection = document.querySelector('.timeline-section'); // Get the section wrapper
+
+      // --- Intersection Observer for General Animations ---
+      // Handles adding '.is-visible' to elements when they enter viewport, with delay.
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const el = entry.target;
+          const delaySec = parseFloat(el.dataset.delay) || 0;
+
+          if (entry.isIntersecting && entry.intersectionRatio > 0.05) { // Trigger slightly earlier
+             // Clear any existing timeout for this element
+            if (el._animationTimeout) clearTimeout(el._animationTimeout);
+            // Set a new timeout to add the class after the delay
+            el._animationTimeout = setTimeout(() => {
+              el.classList.add('is-visible');
+            }, delaySec * 1000);
+          } else if (!entry.isIntersecting) { // Only remove if fully out of view
+            // Clear timeout if element leaves view before animation starts
+            if (el._animationTimeout) {
+              clearTimeout(el._animationTimeout);
+              el._animationTimeout = null;
+            }
+            // Remove class to allow re-animation on scroll-up
+            el.classList.remove('is-visible');
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '0px 0px -50px 0px', // Trigger slightly before element fully enters bottom of viewport
+        threshold: 0.05 // Lower threshold
+      });
+
+      // Observe all designated animated elements
+      animatedEls.forEach(el => observer.observe(el));
+
+      // --- Scroll Event Handler ---
+      // Handles multiple scroll-linked updates: overall progress bar, timeline progress line, timeline item centering.
+      const handleScroll = () => {
+        const scrollTop = window.scrollY;
+        const viewportHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        const totalScrollableHeight = docHeight - viewportHeight;
+
+        // 1. Overall Scroll Progress Bar Update
+        if (progressBar) {
+          const scrollPercent = totalScrollableHeight > 0 ? (scrollTop / totalScrollableHeight) * 100 : 0;
+          progressBar.style.width = scrollPercent + '%';
+        }
+
+        // 2. Timeline Specific Animations (if timeline exists)
+        if (timeline && timelineSection) {
+          const sectionTop = timelineSection.offsetTop;
+          const sectionHeight = timelineSection.offsetHeight;
+          // Calculate how far the user has scrolled *within* the timeline section
+          // 0 = top of section is at top of viewport, sectionHeight = bottom of section is at top of viewport
+          const scrollInSection = scrollTop - sectionTop;
+
+          // a) Timeline Vertical Line Progress
+          // Calculate progress percentage within the section (0 to 100)
+          // Consider the viewport height - line should ideally finish growing when the *end* of the timeline content is visible.
+          const timelineContentHeight = timeline.offsetHeight; // Actual height of the timeline element
+          // Start growing when section top is visible, finish when timeline end reaches ~mid screen
+          const startScroll = sectionTop - viewportHeight * 0.8; // Start a bit before section fully visible
+          const endScroll = sectionTop + timelineContentHeight - viewportHeight * 0.5; // End when timeline end is near mid screen
+          const timelineScrollableDist = endScroll - startScroll;
+
+          let timelineProgress = 0;
+          if (scrollTop > startScroll && timelineScrollableDist > 0) {
+              timelineProgress = ((scrollTop - startScroll) / timelineScrollableDist) * 100;
+          }
+          timelineProgress = Math.max(0, Math.min(100, timelineProgress)); // Clamp between 0 and 100
+
+          // Update the CSS variable for the timeline line height
+          timeline.style.setProperty('--timeline-progress', timelineProgress);
+
+          // b) Timeline Item Centering Effect
+          const viewportCenter = viewportHeight / 2;
+          timelineItems.forEach(item => {
+            const itemRect = item.getBoundingClientRect(); // Position relative to viewport
+            const itemCenter = itemRect.top + itemRect.height / 2;
+            // Check if item center is close to viewport center
+            const proximity = Math.abs(itemCenter - viewportCenter);
+            // Define a threshold for being "centered" (e.g., within 100px of center)
+            const centerThreshold = 100;
+
+            if (proximity < centerThreshold) {
+              item.classList.add('is-centered');
+            } else {
+              item.classList.remove('is-centered');
+            }
+          });
+        }
+      };
+
+      // Attach the scroll handler
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      // Initial call to set states on load
+      handleScroll();
+
+      // --- Cleanup (Optional but good practice) ---
+      // Remove observers when page is unloaded if needed, though modern browsers handle this well.
+      // window.addEventListener('beforeunload', () => {
+      //   observer.disconnect();
+      //   if (timelineObserver) timelineObserver.disconnect();
+      // });
+
+    }); // End DOMContentLoaded
+  </script>
+
+</body>
+</html>

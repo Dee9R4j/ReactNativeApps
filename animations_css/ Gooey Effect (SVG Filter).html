@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gooey Effect</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f06; /* Bright pink background */
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* The container applies the filter */
+        .gooey-container {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            filter: url('#gooeyFilter'); /* Apply the SVG filter */
+            /* Note: Filter needs to be defined in the HTML */
+        }
+
+        .goo-ball {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-color: #fff; /* Balls must be high contrast to bg */
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center initially */
+            animation: moveBall 6s ease-in-out infinite; /* Animate position */
+        }
+
+        /* Stagger animations for multiple balls */
+        .goo-ball:nth-child(1) { animation-delay: 0s; }
+        .goo-ball:nth-child(2) { animation-delay: -2s; transform: translate(-50%, -50%) scale(0.7); }
+        .goo-ball:nth-child(3) { animation-delay: -4s; transform: translate(-50%, -50%) scale(0.5); }
+
+        /* Define the movement animation */
+        @keyframes moveBall {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg) translateX(100px) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) rotate(180deg) translateX(100px) rotate(-180deg); }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="gooey-container">
+        <div class="goo-ball"></div>
+        <div class="goo-ball"></div>
+        <div class="goo-ball"></div>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="position: absolute; width: 0; height: 0;">
+      <defs>
+        <filter id="gooeyFilter">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+          </filter>
+      </defs>
+    </svg>
+</body>
+</html>

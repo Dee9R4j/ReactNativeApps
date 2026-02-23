@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Change Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #333; /* Dark background to contrast */
+            margin: 0;
+        }
+
+        .color-change-element {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            /* Apply animation */
+            animation: colorChange 5s ease-in-out infinite alternate;
+        }
+
+        /* Define the color change animation */
+        @keyframes colorChange {
+            0% {
+                background-color: #3498db; /* Start Blue */
+            }
+            50% {
+                background-color: #e74c3c; /* Mid Red */
+            }
+            100% {
+                background-color: #2ecc71; /* End Green */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="color-change-element">Color Change</div>
+</body>
+</html>

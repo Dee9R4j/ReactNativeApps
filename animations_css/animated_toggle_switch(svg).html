@@ -1,0 +1,23 @@
+<!-- filepath: /Users/deepraj/programming/webdevprojects/animated_toggle_svg.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated SVG Toggle</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f9f9f9; margin: 0; }
+        .toggle-switch { cursor: pointer; width: 80px; }
+        .toggle-switch .track { fill: #ccc; transition: fill 0.3s ease; }
+        .toggle-switch .knob { fill: #fff; stroke: #ccc; stroke-width: 1; transition: transform 0.3s ease; transform: translateX(0px); }
+        .toggle-switch.on .track { fill: #4cd964; /* Green when on */ }
+        .toggle-switch.on .knob { transform: translateX(36px); /* Move knob */ }
+    </style>
+</head>
+<body>
+    <svg class="toggle-switch" viewBox="0 0 80 44" onclick="this.classList.toggle('on')">
+        <rect class="track" x="2" y="2" width="76" height="40" rx="20"/>
+        <circle class="knob" cx="22" cy="22" r="18"/>
+    </svg>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!-- filepath: /Users/deepraj/programming/webdevprojects/svg_loading_bar.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Loading Bar</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #e9ecef; margin: 0; }
+        svg { width: 200px; height: 20px; }
+        .bar-bg { fill: #ddd; }
+        .bar-fill {
+            fill: #28a745; /* Green */
+            transform-origin: left center;
+            animation: fillBar 3s linear infinite;
+        }
+        @keyframes fillBar {
+            0% { transform: scaleX(0); }
+            50% { transform: scaleX(1); }
+            100% { transform: scaleX(0); } /* Example: pulse effect */
+        }
+    </style>
+</head>
+<body>
+    <svg viewBox="0 0 200 20">
+        <rect class="bar-bg" x="0" y="0" width="200" height="20" rx="10"/>
+        <rect class="bar-fill" x="0" y="0" width="200" height="20" rx="10"/>
+    </svg>
+</body>
+</html>

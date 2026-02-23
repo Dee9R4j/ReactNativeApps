@@ -1,0 +1,24 @@
+<!-- filepath: /Users/deepraj/programming/webdevprojects/svg_line_graph_anim.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Line Graph Animation</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f8f9fa; margin: 0; }
+        svg { width: 300px; height: 150px; border: 1px solid #ccc; }
+        .graph-line {
+            fill: none; stroke: #dc3545; /* Red */ stroke-width: 3;
+            stroke-dasharray: 500; /* Estimate length */ stroke-dashoffset: 500;
+            animation: drawLine 3s ease-out forwards;
+        }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+    </style>
+</head>
+<body>
+    <svg viewBox="0 0 300 150">
+        <polyline class="graph-line" points="10,140 50,80 100,100 150,50 200,70 250,20 290,60" />
+    </svg>
+</body>
+</html>

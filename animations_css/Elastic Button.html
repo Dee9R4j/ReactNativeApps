@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elastic Button</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f7f7f7;
+            margin: 0;
+        }
+
+        .elastic-button {
+            position: relative;
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #6a11cb; /* Purple */
+            border: none;
+            border-radius: 50px; /* Rounded ends */
+            cursor: pointer;
+            outline: none;
+            overflow: hidden; /* Hide pseudo-elements initially */
+            transition: color 0.4s ease-out; /* Transition text color */
+            z-index: 1; /* Ensure text is above pseudo-elements */
+        }
+
+        .elastic-button::before,
+        .elastic-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 51%; /* Slightly more than half */
+            height: 100%;
+            background-color: #2575fc; /* Blue */
+            border-radius: inherit; /* Inherit border-radius */
+            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1); /* Elastic ease */
+            z-index: -1; /* Place behind text */
+        }
+
+        .elastic-button::before {
+            left: 0;
+            transform: translateX(-101%); /* Start off-screen left */
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .elastic-button::after {
+            right: 0;
+            transform: translateX(101%); /* Start off-screen right */
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .elastic-button:hover {
+            color: #f0f0f0; /* Change text color on hover */
+        }
+
+        .elastic-button:hover::before,
+        .elastic-button:hover::after {
+            transform: translateX(0); /* Bring pseudo-elements into view */
+        }
+    </style>
+</head>
+<body>
+    <button class="elastic-button">Elastic Hover</button>
+</body>
+</html>

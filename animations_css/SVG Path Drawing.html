@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Path Drawing</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+
+        .svg-container svg {
+            width: 200px; /* Control size */
+            height: auto;
+        }
+
+        .draw-path {
+            stroke: #e44d26; /* SVG stroke color (e.g., HTML5 orange) */
+            stroke-width: 5; /* Stroke thickness */
+            fill: none; /* No fill */
+            stroke-linecap: round; /* Rounded line ends */
+            stroke-linejoin: round; /* Rounded corners */
+
+            /* --- Animation Setup --- */
+            /* Get path length using JS or browser dev tools */
+            /* For this example path, length is approx 805 */
+            stroke-dasharray: 805; /* Set dash pattern to path length */
+            stroke-dashoffset: 805; /* Start with the path fully 'dashed off' (invisible) */
+            animation: draw 3s ease-in-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        /* Define the drawing animation */
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0; /* Animate offset to 0 to reveal the path */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="svg-container">
+        <svg viewBox="0 0 108 120">
+            <path class="draw-path" d="M 10,0 L 0,105 L 54,120 L 108,105 L 98,0 Z M 88,25 L 54,25 L 54,98 L 74,92 L 80,35 Z M 54,37 L 30,37 L 28,60 L 54,60 Z M 54,72 L 27,72 L 25,93 L 54,98 Z"/>
+            </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!-- filepath: /Users/deepraj/programming/webdevprojects/3d_image_tilt_hover.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Image Tilt Hover</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #222; margin: 0; }
+        .tilt-container {
+            width: 300px; height: 200px; perspective: 1000px;
+        }
+        .tilt-image {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 8px;
+            transition: transform 0.4s ease-out;
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        /* JS needed for mouse position tracking for true tilt */
+        /* This is a simplified CSS-only hover version */
+        .tilt-container:hover .tilt-image {
+            transform: rotateY(15deg) rotateX(-10deg) scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="tilt-container">
+        <img class="tilt-image" src="https://placehold.co/300x200/5bc0de/ffffff?text=Tilt+Me" alt="Tilt Image">
+    </div>
+    <!-- Note: True mouse-following tilt requires JavaScript -->
+</body>
+</html>

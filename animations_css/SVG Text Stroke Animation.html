@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Text Stroke Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #0d1b2a; /* Dark blue */
+            margin: 0;
+        }
+
+        .svg-text-container svg {
+            width: 80%; /* Responsive width */
+            max-width: 600px;
+            height: auto;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 5rem; /* Adjust font size within SVG */
+        }
+
+        .animated-text {
+            fill: none; /* No fill initially */
+            stroke: #e0fbfc; /* Light cyan stroke */
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+
+            /* --- Animation Setup --- */
+            /* Get total length via JS or estimate */
+            /* For "STROKE", length is approx 1280 */
+            stroke-dasharray: 1280;
+            stroke-dashoffset: 1280; /* Start invisible */
+
+            /* Animation: draw stroke, then fill */
+            animation:
+                drawStroke 4s ease-in forwards,
+                fillText 1s ease-in 4s forwards; /* Fill starts after stroke draws */
+        }
+
+        @keyframes drawStroke {
+            to {
+                stroke-dashoffset: 0; /* Draw the stroke */
+            }
+        }
+
+        @keyframes fillText {
+            from {
+                fill: none; /* Still no fill */
+            }
+            to {
+                fill: #98c1d9; /* Fill with light blue */
+                stroke-width: 0; /* Optionally hide stroke after fill */
+            }
+        }
+
+         /* Responsive font size via viewBox */
+         /* No media query needed if SVG scales */
+    </style>
+</head>
+<body>
+    <div class="svg-text-container">
+        <svg viewBox="0 0 600 100">
+            <text class="animated-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">
+                STROKE
+            </text>
+            </svg>
+    </div>
+</body>
+</html>

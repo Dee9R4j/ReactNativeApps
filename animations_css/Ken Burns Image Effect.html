@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ken Burns Effect</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e9e9e9;
+            margin: 0;
+        }
+
+        .ken-burns-container {
+            width: 400px; /* Container size */
+            height: 300px;
+            overflow: hidden; /* Crucial: hide parts of image outside container */
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        .ken-burns-container img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover the container, may crop */
+            transition: transform 5s ease-in-out; /* Long transition for slow effect */
+            transform-origin: center center; /* Zoom from center */
+            transform: scale(1.0); /* Start at normal size */
+        }
+
+        /* Apply zoom and pan on hover */
+        .ken-burns-container:hover img {
+            /* Zoom slightly and move slightly */
+            /* Adjust scale and translate values for different effects */
+            transform: scale(1.15) translate(-5px, 5px);
+        }
+
+         /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .ken-burns-container {
+                width: 90%;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ken-burns-container">
+        <img src="https://placehold.co/600x400/a3a3a3/ffffff?text=Hover+Me"
+             alt="Placeholder image for Ken Burns effect"
+             onerror="this.onerror=null; this.src='https://placehold.co/600x400/cccccc/ffffff?text=Image+Error';">
+    </div>
+</body>
+</html>

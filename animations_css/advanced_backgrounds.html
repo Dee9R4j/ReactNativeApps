@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>40 Advanced CSS Background Animations</title>
+    <style>
+        /* Registering a custom property for smoother animation (Requires Houdini support) */
+        @property --color-angle {
+          syntax: '<angle>';
+          inherits: false;
+          initial-value: 0deg;
+        }
+        @property --pos-x {
+          syntax: '<percentage>';
+          inherits: false;
+          initial-value: 0%;
+        }
+         @property --pos-y {
+          syntax: '<percentage>';
+          inherits: false;
+          initial-value: 0%;
+        }
+
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #e9e9e9; /* Lighter background for page */
+            color: #333;
+        }
+
+        .animation-container {
+            position: relative; /* Crucial for positioning pseudo-elements */
+            width: 100%;
+            height: 450px; /* Increased height slightly */
+            overflow: hidden; /* Keep animations contained */
+            margin-bottom: 25px;
+            border: 1px solid #bbb;
+            background-color: #111; /* Default dark background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white; /* Text color for title */
+        }
+
+        .animation-container h2 {
+            position: relative; /* Keep title above animation */
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 1.6em;
+            max-width: 90%;
+        }
+
+        /* Accessibility: Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+            .animation-container {
+                animation: none !important;
+            }
+            .animation-container * {
+                animation: none !important;
+            }
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            z-index: 1000;
+        }
+        #back-to-top:hover {
+            background-color: #555;
+        }
+
+        /* --- Animation Styles (1-20 from previous example) --- */
+
+        /* 1. Animated Gradient Mesh */
+        @keyframes gradientMesh { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        #anim1 { background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradientMesh 15s ease infinite; }
+
+        /* 2. Flowing Plasma / Lava Lamp Effect */
+        @keyframes plasmaFlow { 0% { transform: scale(1) rotate(0deg); filter: blur(10px) contrast(15); } 50% { transform: scale(1.2) rotate(180deg); filter: blur(15px) contrast(20); } 100% { transform: scale(1) rotate(360deg); filter: blur(10px) contrast(15); } }
+        #anim2 { background: #1a001a; }
+        #anim2::before, #anim2::after { content: ''; position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, #ff00ff, #00ffff); border-radius: 50%; mix-blend-mode: screen; animation: plasmaFlow 20s ease-in-out infinite alternate; }
+        #anim2::after { width: 200px; height: 200px; background: radial-gradient(circle, #ffff00, #ff00ff); animation-duration: 15s; animation-delay: -5s; left: 30%; top: 40%; }
+
+        /* 3. Abstract Geometric Shift */
+        @keyframes geoShift { 0% { transform: rotate(0deg) scale(1); opacity: 0.6; } 50% { transform: rotate(180deg) scale(1.5); opacity: 0.8; } 100% { transform: rotate(360deg) scale(1); opacity: 0.6; } }
+        @keyframes geoShift2 { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(20px, -30px) rotate(720deg); } }
+        #anim3 { background: linear-gradient(to right, #434343, #000000); }
+        #anim3::before { content: ''; position: absolute; width: 80%; height: 80%; top: 10%; left: 10%; border: 5px solid rgba(255, 255, 255, 0.3); background: radial-gradient(rgba(255, 255, 255, 0.1), transparent 70%); animation: geoShift 10s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; }
+        #anim3::after { content: ''; position: absolute; width: 50px; height: 50px; top: 40%; left: 45%; background: #fff; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation: geoShift2 8s linear infinite alternate; }
+
+        /* 4. CSS Starfield */
+        @keyframes animStar { from {transform: translateY(0px);} to {transform: translateY(-2000px);} }
+        #anim4 { background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); height: 600px; }
+        .stars1, .stars2, .stars3 { width: 1px; height: 1px; background: transparent; box-shadow: 600px 700px #FFF, 1200px 300px #FFF, 800px 1500px #FFF, 300px 1800px #FFF, 1500px 900px #FFF, 900px 500px #FFF, 1800px 1200px #FFF, 450px 200px #FFF, 1100px 1600px #FFF; animation: animStar 50s linear infinite; position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .stars2 { box-shadow: 500px 800px #FFF, 1300px 400px #FFF, 700px 1600px #FFF, 200px 1900px #FFF, 1600px 1000px #FFF, 1000px 600px #FFF, 1900px 1300px #FFF, 350px 100px #FFF, 1000px 1700px #FFF; width: 2px; height: 2px; animation: animStar 100s linear infinite; }
+        .stars3 { box-shadow: 700px 600px #FFF, 1100px 500px #FFF, 900px 1400px #FFF, 100px 1700px #FFF, 1400px 800px #FFF, 1100px 700px #FFF, 1700px 1100px #FFF, 250px 300px #FFF, 1200px 1500px #FFF; width: 3px; height: 3px; animation: animStar 150s linear infinite; }
+
+        /* 5. Animated Noise Texture */
+        @keyframes grain { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-5%, -10%); } 20% { transform: translate(-15%, 5%); } 30% { transform: translate(7%, -25%); } 40% { transform: translate(-5%, 25%); } 50% { transform: translate(-15%, 10%); } 60% { transform: translate(15%, 0%); } 70% { transform: translate(0%, 15%); } 80% { transform: translate(3%, 35%); } 90% { transform: translate(-10%, 10%); } }
+        #anim5 { background: #4a4a4a; }
+        #anim5::after { content: ""; position: absolute; top: -50%; left: -50%; right: -50%; bottom: -50%; width: 200%; height: 200%; background: transparent url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOCIgbnVtT2N0YXZlcz0iMyIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHR5cGU9InNhdHVyYXRlIiB2YWx1ZXM9IjAiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsdGVyPSJ1cmwoI25vaXNlKSIgb3BhY2l0eT0iMC4xNSIvPjwvc3ZnPg==') 0 0; animation: grain 8s steps(10, end) infinite; mix-blend-mode: overlay; }
+
+        /* 6. Subtle Wave Animation */
+        @keyframes wave { 0% { background-position: 0 bottom; } 100% { background-position: 200px bottom; } }
+        #anim6 { background-color: #0077cc; }
+        #anim6::before, #anim6::after { content: ''; position: absolute; left: 0; right: 0; height: 100px; background-size: 200px 100%; background-repeat: repeat-x; }
+        #anim6::before { bottom: 0; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M0,50 Q50,100 100,50 T200,50 V100 H0 Z" fill="rgba(255,255,255,0.3)"/></svg>'); animation: wave 5s linear infinite; }
+        #anim6::after { bottom: -5px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M0,60 Q50,90 100,60 T200,60 V100 H0 Z" fill="rgba(255,255,255,0.5)"/></svg>'); animation: wave 7s linear infinite reverse; opacity: 0.7; }
+
+        /* 7. Pulsing Hexagon Grid */
+        @keyframes pulseHex { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } }
+        #anim7 { --hex-size: 50px; --hex-gap: 5px; --hex-color: rgba(0, 255, 255, 0.2); --hex-bg: #222; background-color: var(--hex-bg); background-image: linear-gradient(30deg, var(--hex-color) 12%, transparent 12.5%, transparent 87%, var(--hex-color) 87.5%, var(--hex-color)), linear-gradient(-30deg, var(--hex-color) 12%, transparent 12.5%, transparent 87%, var(--hex-color) 87.5%, var(--hex-color)), linear-gradient(90deg, transparent 25%, var(--hex-color) 25%, var(--hex-color) 75%, transparent 75%, transparent), linear-gradient(var(--hex-color) 2px, transparent 2px), linear-gradient(30deg, var(--hex-bg) 25%, transparent 25.5%, transparent 75%, var(--hex-bg) 75%, var(--hex-bg)), linear-gradient(-30deg, var(--hex-bg) 25%, transparent 25.5%, transparent 75%, var(--hex-bg) 75%, var(--hex-bg)); background-size: calc(var(--hex-size) * 1.732) var(--hex-size), calc(var(--hex-size) * 1.732) var(--hex-size), calc(var(--hex-size) * 1.732) var(--hex-size), calc(var(--hex-size) * 1.732) var(--hex-size), calc(var(--hex-size) * 0.866) calc(var(--hex-size) * 0.5), calc(var(--hex-size) * 0.866) calc(var(--hex-size) * 0.5); background-position: 0 0, 0 0, 0 0, 0 0, calc(var(--hex-size) * 0.866) calc(var(--hex-size) * 0.5), calc(var(--hex-size) * 0.866) calc(var(--hex-size) * 0.5); animation: pulseHex 4s ease-in-out infinite; }
+
+        /* 8. Shifting 3D Cubes */
+        @keyframes rotateCube { 0% { transform: rotateX(0deg) rotateY(0deg); } 100% { transform: rotateX(360deg) rotateY(360deg); } }
+        #anim8 { background: #333; perspective: 800px; }
+        .cube-container { width: 100px; height: 100px; position: relative; transform-style: preserve-3d; animation: rotateCube 20s linear infinite; margin: 0 auto; }
+        .cube-face { position: absolute; width: 100px; height: 100px; border: 1px solid cyan; background: rgba(0, 255, 255, 0.2); opacity: 0.7; }
+        .front { transform: translateZ(50px); } .back { transform: rotateY(180deg) translateZ(50px); } .right { transform: rotateY(90deg) translateZ(50px); } .left { transform: rotateY(-90deg) translateZ(50px); } .top { transform: rotateX(90deg) translateZ(50px); } .bottom { transform: rotateX(-90deg) translateZ(50px); }
+
+        /* 9. Animated Scanlines */
+        @keyframes scanlines { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
+        #anim9 { background-color: #222; position: relative; }
+        #anim9::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient( to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50% ); background-size: 100% 8px; opacity: 0.3; animation: scanlines 0.2s linear infinite; }
+
+        /* 10. Expanding Circles */
+        @keyframes expandCircle { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+        #anim10 { background-color: #4b0082; }
+        #anim10 .circle { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.1); animation: expandCircle 4s ease-out infinite; }
+        #anim10 .c1 { width: 100px; height: 100px; top: 20%; left: 30%; animation-delay: 0s; } #anim10 .c2 { width: 150px; height: 150px; top: 50%; left: 60%; animation-delay: 1s; } #anim10 .c3 { width: 80px; height: 80px; top: 70%; left: 20%; animation-delay: 2s; } #anim10 .c4 { width: 200px; height: 200px; top: 10%; left: 70%; animation-delay: 3s; }
+
+        /* 11. Diagonal Line Wipe */
+        @keyframes lineWipe { 0% { transform: translateX(-100%) skewX(-30deg); } 100% { transform: translateX(100%) skewX(-30deg); } }
+        #anim11 { background: linear-gradient(45deg, #ff9a9e, #fad0c4); }
+        #anim11::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 150%; background: linear-gradient(45deg, #fad0c4, #ff9a9e); animation: lineWipe 5s ease-in-out infinite alternate; opacity: 0.8; }
+
+        /* 12. Glowing Edges */
+        @keyframes glowEdge { 0%, 100% { box-shadow: 0 0 10px 5px rgba(0, 255, 255, 0.5), inset 0 0 10px 5px rgba(0, 255, 255, 0.3); } 50% { box-shadow: 0 0 20px 10px rgba(0, 255, 255, 0.8), inset 0 0 20px 10px rgba(0, 255, 255, 0.5); } }
+        #anim12 { background: #111; animation: glowEdge 3s ease-in-out infinite; }
+        #anim12 h2 { border: 2px solid cyan; border-radius: 5px; } /* Style title for effect */
+
+        /* 13. Matrix Rain (Simplified) */
+        @keyframes matrixRain { 0% { transform: translateY(-100px); } 100% { transform: translateY(450px); } } /* Adjusted height */
+        #anim13 { background: #000; font-family: 'Courier New', Courier, monospace; }
+        #anim13 .matrix-col { position: absolute; top: 0; height: 100%; writing-mode: vertical-rl; text-orientation: upright; white-space: nowrap; user-select: none; font-size: 18px; color: #00ff00; text-shadow: 0 0 5px #00ff00; animation: matrixRain 10s linear infinite; opacity: 0.8; overflow: hidden; }
+        #anim13 .c1 { left: 10%; animation-duration: 8s; animation-delay: -2s; } #anim13 .c2 { left: 25%; animation-duration: 12s; animation-delay: -5s; font-size: 14px; opacity: 0.6;} #anim13 .c3 { left: 40%; animation-duration: 7s; animation-delay: 0s; } #anim13 .c4 { left: 55%; animation-duration: 10s; animation-delay: -7s; } #anim13 .c5 { left: 70%; animation-duration: 9s; animation-delay: -3s; font-size: 20px; opacity: 1;} #anim13 .c6 { left: 85%; animation-duration: 11s; animation-delay: -1s; }
+
+        /* 14. Rotating Radial Gradient Border */
+        @keyframes rotateRadial { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        #anim14 { background: #222; }
+        #anim14::before { content: ''; position: absolute; inset: -100%; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); animation: rotateRadial 4s linear infinite; }
+        #anim14::after { content: ''; position: absolute; inset: 5px; background: #222; }
+
+        /* 15. Clip-Path Shape Morph */
+        @keyframes morphShape { 0%, 100% { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); } 25% { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); } 50% { clip-path: polygon(50% 0%, 100% 100%, 0% 100%); } 75% { clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); } }
+        #anim15 { background: linear-gradient(135deg, #667eea, #764ba2); animation: morphShape 10s ease-in-out infinite; }
+
+        /* 16. Tunnel Illusion */
+        @keyframes tunnel { 0% { transform: perspective(500px) rotateX(80deg) scale(5); opacity: 0.1; } 100% { transform: perspective(500px) rotateX(80deg) scale(0.1); opacity: 1; } }
+        #anim16 { background: #111; perspective: 500px; }
+        #anim16 .ring { position: absolute; width: 300px; height: 300px; border: 5px solid cyan; border-radius: 50%; left: 50%; top: 100%; transform-origin: 50% 0; animation: tunnel 5s linear infinite; }
+        #anim16 .r1 { animation-delay: 0s; } #anim16 .r2 { animation-delay: -0.5s; border-color: magenta; } #anim16 .r3 { animation-delay: -1s; } #anim16 .r4 { animation-delay: -1.5s; border-color: magenta; } #anim16 .r5 { animation-delay: -2s; }
+
+        /* 17. Checkered Pattern Scroll */
+        @keyframes scrollCheckers { 0% { background-position: 0 0; } 100% { background-position: 100px 100px; } }
+        #anim17 { --checker-size: 50px; background-color: #eee; background-image: linear-gradient(45deg, #aaa 25%, transparent 25%), linear-gradient(-45deg, #aaa 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #aaa 75%), linear-gradient(-45deg, transparent 75%, #aaa 75%); background-size: var(--checker-size) var(--checker-size); animation: scrollCheckers 3s linear infinite; color: #333; } /* Text color changed */
+        #anim17 h2 { background-color: rgba(255, 255, 255, 0.6); }
+
+        /* 18. Bokeh Effect (Simplified) */
+        @keyframes bokehFloat { 0% { transform: translateY(0) scale(1); opacity: 0.5; } 50% { transform: translateY(-150px) scale(1.2); opacity: 0.8; } 100% { transform: translateY(-300px) scale(1); opacity: 0; } } /* Adjusted distance */
+        #anim18 { background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); }
+        #anim18 .bokeh { position: absolute; border-radius: 50%; filter: blur(5px); animation: bokehFloat 10s linear infinite; }
+        #anim18 .b1 { width: 80px; height: 80px; background: rgba(255, 255, 150, 0.6); left: 10%; top: 80%; animation-duration: 12s; animation-delay: -2s; } #anim18 .b2 { width: 120px; height: 120px; background: rgba(150, 255, 255, 0.5); left: 70%; top: 90%; animation-duration: 8s; animation-delay: -5s; } #anim18 .b3 { width: 50px; height: 50px; background: rgba(255, 150, 255, 0.7); left: 40%; top: 85%; animation-duration: 15s; animation-delay: 0s; }
+
+        /* 19. Shimmering Curtain */
+        @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+        #anim19 { background-color: #6a0dad; }
+        #anim19::before { content: ''; position: absolute; inset: 0; background: linear-gradient( 110deg, transparent 20%, rgba(255, 255, 255, 0.3) 45%, rgba(255, 255, 255, 0.3) 55%, transparent 80% ); background-size: 200% 100%; animation: shimmer 5s linear infinite; mix-blend-mode: overlay; }
+
+        /* 20. Pulsing Grid Lines */
+        @keyframes pulseGrid { 0%, 100% { background-size: 50px 50px, 50px 50px; opacity: 0.2; } 50% { background-size: 60px 60px, 60px 60px; opacity: 0.5; } }
+        #anim20 { background-color: #1d1d1d; background-image: linear-gradient(rgba(0, 255, 0, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 0, 0.2) 1px, transparent 1px); background-size: 50px 50px, 50px 50px; animation: pulseGrid 4s ease-in-out infinite; }
+
+        /* --- NEW Animation Styles (21-40) --- */
+
+        /* 21. Warp Speed Effect */
+        @keyframes warpSpeed {
+            0% { transform: translateZ(-500px) scale(5); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateZ(500px) scale(0.1); opacity: 0; }
+        }
+        #anim21 { background: #000; perspective: 400px; }
+        #anim21 .warp-line {
+            position: absolute;
+            left: 50%; top: 50%;
+            width: 2px;
+            height: 150px; /* Length of streak */
+            background: linear-gradient(to bottom, transparent, cyan, cyan);
+            transform-origin: 50% 0; /* Rotate from center top */
+            animation: warpSpeed 1.5s linear infinite;
+        }
+        /* Add multiple lines rotated with different delays */
+        #anim21 .wl1 { transform: rotate(0deg); animation-delay: 0s; }
+        #anim21 .wl2 { transform: rotate(30deg); animation-delay: -0.1s; }
+        #anim21 .wl3 { transform: rotate(60deg); animation-delay: -0.2s; }
+        #anim21 .wl4 { transform: rotate(90deg); animation-delay: -0.3s; }
+        #anim21 .wl5 { transform: rotate(120deg); animation-delay: -0.4s; }
+        #anim21 .wl6 { transform: rotate(150deg); animation-delay: -0.5s; }
+        #anim21 .wl7 { transform: rotate(180deg); animation-delay: -0.6s; }
+
+        /* 22. Fractal Noise Zoom/Pan */
+        @keyframes noiseZoomPan {
+            0% { background-size: 100% 100%; background-position: 0% 0%; filter: contrast(1); }
+            50% { background-size: 150% 150%; background-position: 100% 100%; filter: contrast(1.5); }
+            100% { background-size: 100% 100%; background-position: 0% 0%; filter: contrast(1); }
+        }
+        #anim22 {
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuMDUiIG51bU9jdGF2ZXM9IjUiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+') center/100% 100%;
+            animation: noiseZoomPan 20s ease-in-out infinite;
+            filter: grayscale(1) contrast(1); /* Base filters */
+        }
+
+        /* 23. Animated SVG Path Outline */
+        @keyframes drawPath {
+            to { stroke-dashoffset: 0; }
+        }
+        #anim23 { background: #2c3e50; display: flex; align-items: center; justify-content: center; }
+        #anim23 svg { width: 80%; height: 80%; }
+        #anim23 svg path {
+            stroke: #1abc9c;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 1000; /* Estimate path length (or use JS) */
+            stroke-dashoffset: 1000;
+            animation: drawPath 5s linear infinite alternate;
+        }
+
+        /* 24. Layered Parallax Clouds */
+        @keyframes moveClouds1 { from { background-position: 0 0; } to { background-position: -1000px 0; } }
+        @keyframes moveClouds2 { from { background-position: 0 0; } to { background-position: -1500px 0; } }
+        @keyframes moveClouds3 { from { background-position: 0 0; } to { background-position: -800px 0; } }
+        #anim24 { background: linear-gradient(to bottom, #87CEEB, #B0E0E6); } /* Sky blue */
+        #anim24::before, #anim24::after, #anim24 .cloud-layer {
+            content: ''; position: absolute; inset: 0;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPoAAAAiCAMAAABsLXmJAAAAYFBMVEX///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8Gy0sBAAAAH3RSTlMAAQIDBAUHCAkKCw4PERQVFxgZGhseISQoLDEyNDXEmFI3AAABKUlEQVRo3u3YyW7DMAwEUFxd3P//u7occQKKIHaZkmVel+3kKAAACOTS3NEKaKRijKI4RjFiNeQxjmIMZRjGKEaxjh6MxjAeo5jGEMMx5jGOYgxlKMNRjGIMYxnHMMZQhqlTwzGKYzQDR0MxhjOcZRpDBYpRjGEIRxkGFQw1lKEc5xmjGFQw1KQM51mMMVTBUIOyCM8ZijFUwVCDMoRnMMZQBULNyjCeYYyhCkLNijCcYYyhC4SaFcLwDKMYuhAoVWg4wjOMYugCoVSlYQhnFAMXCKQqy9Qpw7GKYQKFVMkwhGcYwxAIpSoMkzDMYwwBUSCFyhh+YRiHsSAIpCoMhzCcxwAIpAoMkzAcxoAIRCEzDOYxAQKhyAyHMB4RICAFygyHMB4OIHCAHIZ5OCAACYQMgxkeCAAAGGGD8O0zAAAAAElFTkSuQmCC') repeat-x; /* Simple cloud PNG */
+            opacity: 0.7;
+        }
+        #anim24::before { background-position: 0 50px; animation: moveClouds1 60s linear infinite; opacity: 0.8; }
+        #anim24::after { background-position: 0 150px; animation: moveClouds2 40s linear infinite; opacity: 0.6; transform: scaleX(-1); } /* Flipped */
+        #anim24 .cloud-layer { background-position: 0 250px; animation: moveClouds3 80s linear infinite; opacity: 0.9; }
+
+        /* 25. Morphing Gooey Blob */
+        @keyframes morphBlob {
+            0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(0deg) scale(1); }
+            34% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: rotate(720deg) scale(1.1); }
+            67% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; transform: rotate(-360deg) scale(0.9); }
+        }
+        #anim25 { background: #f39c12; filter: contrast(20); } /* Contrast helps 'gooey' effect */
+        #anim25::before {
+            content: ''; position: absolute;
+            width: 150px; height: 150px;
+            top: calc(50% - 75px); left: calc(50% - 75px);
+            background: #e74c3c;
+            animation: morphBlob 10s ease-in-out infinite;
+            filter: blur(15px); /* Blur is key for gooey */
+        }
+        /* Add another blob for interaction */
+        #anim25::after {
+            content: ''; position: absolute;
+            width: 100px; height: 100px;
+            top: 60%; left: 30%;
+            background: #9b59b6;
+            animation: morphBlob 12s ease-in-out infinite reverse;
+            filter: blur(15px);
+        }
+
+        /* 26. Animated Mask Reveal */
+        @keyframes revealMask {
+            0% { mask-position: -100% 0; }
+            100% { mask-position: 100% 0; }
+            /* For webkit */
+             0% { -webkit-mask-position: -100% 0; }
+            100% { -webkit-mask-position: 100% 0; }
+        }
+        #anim26 { background: linear-gradient(45deg, #ff00cc, #3333ff); }
+        #anim26::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(-45deg, #33ff33, #ffff33); /* Content underneath */
+             mask-image: linear-gradient(to right, transparent 30%, black 50%, transparent 70%);
+            mask-size: 300% 100%;
+            animation: revealMask 6s linear infinite alternate;
+             /* Webkit prefix */
+            -webkit-mask-image: linear-gradient(to right, transparent 30%, black 50%, transparent 70%);
+            -webkit-mask-size: 300% 100%;
+            animation: revealMask 6s linear infinite alternate;
+        }
+
+        /* 27. Subtle Glitch Effect */
+        @keyframes glitchShift {
+           0%, 100% { transform: translate(0, 0); opacity: 1; }
+           5% { transform: translate(5px, -3px); }
+           10% { transform: translate(-4px, 2px); }
+           15% { transform: translate(0, 0); clip-path: inset(10% 0 80% 0); }
+           20% { clip-path: inset(auto); } /* Reset clip-path */
+           /* ... more random shifts */
+           50% { transform: translate(3px, 3px); opacity: 0.8;}
+           55% { transform: translate(-6px, -2px); clip-path: inset(70% 0 10% 0); }
+           60% { transform: translate(0, 0); opacity: 1; clip-path: inset(auto); }
+        }
+        #anim27 { background: url('https://picsum.photos/600/400?grayscale') center/cover; } /* Example image */
+        #anim27::before, #anim27::after {
+            content: ''; position: absolute; inset: 0;
+            background: inherit; /* Use same background */
+            animation: glitchShift 3s steps(6, end) infinite;
+        }
+        #anim27::before { transform: translateX(-5px); mix-blend-mode: screen; opacity: 0.7; filter: hue-rotate(90deg); animation-delay: -0.1s;}
+        #anim27::after { transform: translateX(5px); mix-blend-mode: screen; opacity: 0.7; filter: hue-rotate(-90deg); animation-delay: -0.2s;}
+
+        /* 28. Animated Line Patterns */
+        @keyframes moveLines { to { background-position: 200% center; } }
+        #anim28 {
+            --line-color: rgba(255, 255, 0, 0.5);
+            background-color: #34495e;
+            background-image:
+              repeating-linear-gradient(45deg, var(--line-color), var(--line-color) 1px, transparent 1px, transparent 20px),
+              repeating-linear-gradient(-45deg, var(--line-color), var(--line-color) 1px, transparent 1px, transparent 20px);
+            background-size: 100% 100%;
+            animation: moveLines 10s linear infinite;
+        }
+
+        /* 29. Animated 3D Grid */
+        @keyframes rotateGrid {
+            from { transform: perspective(1000px) rotateX(70deg) rotateZ(0deg); }
+            to { transform: perspective(1000px) rotateX(70deg) rotateZ(360deg); }
+        }
+        #anim29 {
+            background-color: #000;
+            perspective: 1000px; /* Need high perspective */
+            display: flex; align-items: center; justify-content: center;
+        }
+        #anim29 .grid-plane {
+            width: 500px; height: 500px; /* Adjust size */
+            background-image:
+              linear-gradient(to right, cyan 1px, transparent 1px),
+              linear-gradient(to bottom, cyan 1px, transparent 1px);
+            background-size: 30px 30px; /* Grid spacing */
+            transform-style: preserve-3d;
+            animation: rotateGrid 30s linear infinite;
+            opacity: 0.5;
+        }
+
+        /* 30. @property Color Cycle (Needs Houdini Support) */
+        @keyframes cycleColorAngle {
+            to { --color-angle: 360deg; }
+        }
+        #anim30 {
+            background: conic-gradient(from var(--color-angle), hsl(0, 80%, 70%), hsl(60, 80%, 70%), hsl(120, 80%, 70%), hsl(180, 80%, 70%), hsl(240, 80%, 70%), hsl(300, 80%, 70%), hsl(360, 80%, 70%));
+            animation: cycleColorAngle 10s linear infinite;
+        }
+        #anim30 h2 { color: #111; background-color: rgba(255,255,255,0.7); }
+
+        /* 31. Pseudo-Kaleidoscope */
+        @keyframes kaleidoRotate { to { transform: rotate(360deg); } }
+        #anim31 { background: #222; }
+        #anim31 .kaleido-segment {
+            position: absolute;
+            width: 200%; height: 200%; /* Larger than container */
+            top: -50%; left: -50%;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00);
+            background-size: 300% 300%; /* Needs to move */
+            animation: gradientMesh 10s ease infinite alternate, kaleidoRotate 30s linear infinite; /* Combine */
+            mix-blend-mode: screen;
+            transform-origin: center center;
+        }
+        /* Create rotated/flipped segments using pseudo-elements or more divs */
+        #anim31 .s1 { clip-path: polygon(50% 50%, 100% 0, 100% 100%); transform: rotate(0deg); }
+        #anim31 .s2 { clip-path: polygon(50% 50%, 100% 100%, 0 100%); transform: rotate(90deg); animation-delay: -1s; }
+        #anim31 .s3 { clip-path: polygon(50% 50%, 0 100%, 0 0); transform: rotate(180deg); animation-delay: -2s; }
+        #anim31 .s4 { clip-path: polygon(50% 50%, 0 0, 100% 0); transform: rotate(270deg); animation-delay: -3s; }
+
+        /* 32. Liquid Distortion Simulation */
+         @keyframes liquidMove {
+            0% { transform: translate(0, 0); filter: blur(15px) contrast(25) hue-rotate(0deg); }
+            25% { transform: translate(20px, -10px); }
+            50% { transform: translate(-15px, 15px); filter: blur(20px) contrast(30) hue-rotate(90deg); }
+            75% { transform: translate(10px, 5px); }
+            100% { transform: translate(0, 0); filter: blur(15px) contrast(25) hue-rotate(360deg); }
+        }
+        #anim32 { background-color: #000; filter: contrast(25); } /* Parent contrast */
+        #anim32::before, #anim32::after {
+            content: ''; position: absolute;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, #0f0, #00f);
+            border-radius: 45% 55% 60% 40% / 50% 45% 55% 50%; /* Blobby shape */
+            animation: liquidMove 15s ease-in-out infinite alternate;
+            filter: blur(15px); /* Child blur */
+            mix-blend-mode: screen;
+        }
+        #anim32::after {
+            width: 150px; height: 150px;
+            left: 60%; top: 55%;
+            background: radial-gradient(circle, #f00, #ff0);
+            animation-duration: 12s;
+            animation-delay: -3s;
+        }
+
+        /* 33. Circuit Board Traces */
+        @keyframes drawTrace {
+            0% { width: 0; left: 50%; }
+            50% { width: 100%; left: 0; }
+            100% { width: 0; left: 50%; }
+        }
+        @keyframes drawTraceV {
+            0% { height: 0; top: 50%; }
+            50% { height: 100%; top: 0; }
+            100% { height: 0; top: 50%; }
+        }
+        #anim33 { background-color: #003300; /* Dark green */ }
+        #anim33 .trace-h, #anim33 .trace-v {
+            position: absolute;
+            background-color: #00ff00; /* Bright green */
+            box-shadow: 0 0 5px #00ff00;
+            border-radius: 1px;
+        }
+        #anim33 .trace-h { height: 2px; animation: drawTrace 4s linear infinite; }
+        #anim33 .trace-v { width: 2px; animation: drawTraceV 3s linear infinite; }
+        /* Position multiple traces */
+        #anim33 .th1 { top: 20%; animation-delay: -0.5s; }
+        #anim33 .th2 { top: 50%; animation-delay: -1.5s; animation-duration: 5s; }
+        #anim33 .th3 { top: 80%; animation-delay: -2.5s; }
+        #anim33 .tv1 { left: 25%; animation-delay: -1s; animation-duration: 4.5s; }
+        #anim33 .tv2 { left: 75%; animation-delay: -2s; }
+
+        /* 34. Hypnotic Spiral */
+        @keyframes spiralRotateScale {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(720deg) scale(1.5); } /* Rotate twice and zoom slightly */
+        }
+        #anim34 {
+            background: repeating-conic-gradient(#FFF 0% 2.5%, #000 2.5% 5%); /* Adjust percentages for thickness */
+            animation: spiralRotateScale 10s linear infinite alternate;
+        }
+
+        /* 35. Falling Characters Rain (Symbols) */
+        @keyframes fallChars {
+          0% { transform: translateY(-100px) rotate(0deg); opacity: 1;}
+          90% { opacity: 1;}
+          100% { transform: translateY(450px) rotate(720deg); opacity: 0;} /* Adjusted height */
+        }
+        #anim35 { background: #1a1a2e; font-size: 20px; }
+        #anim35 .char-col { position: absolute; top: 0; height: 100%; writing-mode: vertical-rl; text-orientation: mixed; white-space: nowrap; user-select: none; color: #e0fbfc; text-shadow: 0 0 5px #98c1d9; animation: fallChars 10s linear infinite; opacity: 0.9; overflow: hidden; }
+        /* Use different delays and symbols */
+        #anim35 .cc1 { left: 15%; animation-duration: 9s; animation-delay: -1s; }
+        #anim35 .cc2 { left: 30%; animation-duration: 13s; animation-delay: -6s; color: #fca311; }
+        #anim35 .cc3 { left: 45%; animation-duration: 8s; animation-delay: -3s; }
+        #anim35 .cc4 { left: 60%; animation-duration: 11s; animation-delay: -8s; color: #e63946; }
+        #anim35 .cc5 { left: 75%; animation-duration: 10s; animation-delay: -4s; }
+        #anim35 .cc6 { left: 90%; animation-duration: 12s; animation-delay: -2s; color: #a8dadc; }
+
+        /* 36. Complex Clip-Path Transition */
+        @keyframes complexClip {
+            0%, 100% { clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%); } /* Star-like */
+            50% { clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); } /* Another Star */
+        }
+        #anim36 {
+            background: linear-gradient(to right, #fc466b, #3f5efb);
+            animation: complexClip 8s ease-in-out infinite;
+        }
+
+        /* 37. Layered Glass Panels */
+        @keyframes panelParallax {
+             from { transform: translateY(0px); }
+             to { transform: translateY(-20px); } /* Subtle parallax shift */
+        }
+        #anim37 {
+            background: url('https://picsum.photos/id/1018/600/450') center/cover fixed; /* Scenic background */
+            position: relative; /* Needed for backdrop-filter */
+        }
+        #anim37::before, #anim37::after {
+            content: ''; position: absolute; inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+             /* Note: backdrop-filter can be performance intensive */
+            backdrop-filter: blur( 5px );
+            -webkit-backdrop-filter: blur( 5px );
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            animation: panelParallax 15s ease-in-out infinite alternate;
+        }
+        #anim37::before {
+            inset: 10% 20%; /* First smaller panel */
+            backdrop-filter: blur( 10px ); -webkit-backdrop-filter: blur( 10px );
+            animation-duration: 10s;
+            z-index: 2;
+        }
+        #anim37::after {
+            inset: 25% 15%; /* Second smaller panel */
+             backdrop-filter: blur( 2px ); -webkit-backdrop-filter: blur( 2px );
+             animation-duration: 20s; animation-delay: -2s;
+             z-index: 1;
+        }
+
+        /* 38. Animated Pixel Dissolve */
+        @keyframes pixelDissolve {
+            0%, 100% { opacity: 1; background-size: 10px 10px; }
+            50% { opacity: 0.5; background-size: 50px 50px; } /* Larger squares = more dissolved */
+        }
+        #anim38 {
+            background-color: #ffcc00; /* Base color */
+            background-image: linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),
+                              linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000); /* Checker pattern */
+            background-position: 0 0, 5px 5px; /* Offset pattern */
+            background-size: 10px 10px; /* Pixel size */
+            animation: pixelDissolve 5s steps(5, end) infinite;
+             color: #000;
+        }
+        #anim38 h2 { background-color: rgba(255, 255, 255, 0.7); }
+
+        /* 39. Sound Wave Visualization (Simulation) */
+        @keyframes waveHeight {
+            0%, 100% { transform: scaleY(0.1); }
+            50% { transform: scaleY(1); }
+        }
+        #anim39 { background: #000; display: flex; justify-content: center; align-items: flex-end; gap: 5px; padding: 0 20px; }
+        #anim39 .bar {
+            width: 10px; height: 80%; /* Max height */
+            background: linear-gradient(to top, magenta, cyan);
+            transform-origin: bottom;
+            animation: waveHeight 1s ease-in-out infinite alternate;
+        }
+        /* Add multiple bars with delays */
+        #anim39 .b1 { animation-delay: -0.5s; } #anim39 .b2 { animation-delay: -0.3s; }
+        #anim39 .b3 { animation-delay: -0.1s; } #anim39 .b4 { animation-delay: 0s; }
+        #anim39 .b5 { animation-delay: -0.2s; } #anim39 .b6 { animation-delay: -0.4s; }
+        #anim39 .b7 { animation-delay: -0.6s; } #anim39 .b8 { animation-delay: -0.45s; }
+        #anim39 .b9 { animation-delay: -0.25s; } #anim39 .b10 { animation-delay: -0.05s; }
+
+        /* 40. Aurora Borealis Effect */
+        @keyframes auroraFlow {
+            0% { transform: translateX(-20%) translateY(-20%) rotate(-10deg); opacity: 0.6; filter: hue-rotate(0deg) blur(40px); }
+            50% { transform: translateX(20%) translateY(10%) rotate(5deg); opacity: 0.8; filter: hue-rotate(60deg) blur(50px); }
+            100% { transform: translateX(-20%) translateY(-20%) rotate(-10deg); opacity: 0.6; filter: hue-rotate(0deg) blur(40px); }
+        }
+        @keyframes auroraFlow2 { /* Second layer */
+             0% { transform: translateX(15%) translateY(25%) rotate(15deg); opacity: 0.5; filter: hue-rotate(180deg) blur(35px); }
+             50% { transform: translateX(-10%) translateY(-15%) rotate(-5deg); opacity: 0.7; filter: hue-rotate(240deg) blur(45px); }
+            100% { transform: translateX(15%) translateY(25%) rotate(15deg); opacity: 0.5; filter: hue-rotate(180deg) blur(35px); }
+        }
+        #anim40 { background: #000010; /* Deep night blue */ }
+        #anim40::before, #anim40::after {
+            content: ''; position: absolute;
+            left: -50%; top: -50%; /* Start outside */
+            width: 200%; height: 200%;
+            border-radius: 50%; /* Soft edges */
+            mix-blend-mode: screen;
+        }
+        #anim40::before {
+            background: radial-gradient(circle at center, transparent, transparent 40%, #0f0, #0af, transparent 70%);
+            animation: auroraFlow 25s ease-in-out infinite;
+        }
+        #anim40::after {
+             background: radial-gradient(circle at center, transparent, transparent 45%, #f0f, #f80, transparent 75%);
+            animation: auroraFlow2 30s ease-in-out infinite reverse; /* Different timing/direction */
+        }
+    </style>
+</head>
+<body>
+    <h1>40 Advanced CSS Background Animations</h1>
+    <p>Showcasing various techniques using pseudo-elements, gradients, transforms, clip-paths, filters, masks, SVGs, and more. Performance may vary significantly, and some effects push CSS limits.</p>
+
+    <div class="animation-container" id="anim1"><h2>1. Animated Gradient Mesh</h2></div>
+    <div class="animation-container" id="anim2"><h2>2. Flowing Plasma / Lava Lamp</h2></div>
+    <div class="animation-container" id="anim3"><h2>3. Abstract Geometric Shift</h2></div>
+    <div class="animation-container" id="anim4"><h2>4. CSS Starfield</h2><div class="stars1"></div><div class="stars2"></div><div class="stars3"></div></div>
+    <div class="animation-container" id="anim5"><h2>5. Animated Noise Texture</h2></div>
+    <div class="animation-container" id="anim6"><h2>6. Subtle Wave Animation</h2></div>
+    <div class="animation-container" id="anim7"><h2>7. Pulsing Hexagon Grid</h2></div>
+    <div class="animation-container" id="anim8"><h2>8. Shifting 3D Cubes</h2><div class="cube-container"><div class="cube-face front"></div><div class="cube-face back"></div><div class="cube-face right"></div><div class="cube-face left"></div><div class="cube-face top"></div><div class="cube-face bottom"></div></div></div>
+    <div class="animation-container" id="anim9"><h2>9. Animated Scanlines</h2></div>
+    <div class="animation-container" id="anim10"><h2>10. Expanding Circles</h2><div class="circle c1"></div><div class="circle c2"></div><div class="circle c3"></div><div class="circle c4"></div></div>
+    <div class="animation-container" id="anim11"><h2>11. Diagonal Line Wipe</h2></div>
+    <div class="animation-container" id="anim12"><h2>12. Glowing Edges</h2></div>
+    <div class="animation-container" id="anim13"><h2>13. Matrix Rain (Simplified)</h2><div class="matrix-col c1">01101001</div><div class="matrix-col c2">ﾊﾐﾋｰｳｼ</div><div class="matrix-col c3">ΑΒΓΔΕΖ</div><div class="matrix-col c4">10010110</div><div class="matrix-col c5">ｱｲｳｴｵｶ</div><div class="matrix-col c6">ΠΡΣΤΥΦ</div></div>
+    <div class="animation-container" id="anim14"><h2>14. Rotating Radial Gradient Border</h2></div>
+    <div class="animation-container" id="anim15"><h2>15. Clip-Path Shape Morph</h2></div>
+    <div class="animation-container" id="anim16"><h2>16. Tunnel Illusion</h2><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="ring r4"></div><div class="ring r5"></div></div>
+    <div class="animation-container" id="anim17"><h2>17. Checkered Pattern Scroll</h2></div>
+    <div class="animation-container" id="anim18"><h2>18. Bokeh Effect (Simplified)</h2><div class="bokeh b1"></div><div class="bokeh b2"></div><div class="bokeh b3"></div></div>
+    <div class="animation-container" id="anim19"><h2>19. Shimmering Curtain</h2></div>
+    <div class="animation-container" id="anim20"><h2>20. Pulsing Grid Lines</h2></div>
+
+    <div class="animation-container" id="anim21"><h2>21. Warp Speed Effect</h2>
+        <div class="warp-line wl1"></div><div class="warp-line wl2"></div><div class="warp-line wl3"></div>
+        <div class="warp-line wl4"></div><div class="warp-line wl5"></div><div class="warp-line wl6"></div>
+        <div class="warp-line wl7"></div> </div>
+    <div class="animation-container" id="anim22"><h2>22. Fractal Noise Zoom/Pan</h2></div>
+    <div class="animation-container" id="anim23"><h2>23. Animated SVG Path Outline</h2>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,50 Q25,10 50,50 T90,50 M10,50 C20,80 80,80 90,50"/>
+        </svg>
+    </div>
+    <div class="animation-container" id="anim24"><h2>24. Layered Parallax Clouds</h2><div class="cloud-layer"></div></div>
+    <div class="animation-container" id="anim25"><h2>25. Morphing Gooey Blob</h2></div>
+    <div class="animation-container" id="anim26"><h2>26. Animated Mask Reveal</h2></div>
+    <div class="animation-container" id="anim27"><h2>27. Subtle Glitch Effect</h2></div>
+    <div class="animation-container" id="anim28"><h2>28. Animated Line Patterns</h2></div>
+    <div class="animation-container" id="anim29"><h2>29. Animated 3D Grid</h2><div class="grid-plane"></div></div>
+    <div class="animation-container" id="anim30"><h2>30. @property Color Cycle (Houdini)</h2></div>
+    <div class="animation-container" id="anim31"><h2>31. Pseudo-Kaleidoscope</h2>
+        <div class="kaleido-segment s1"></div><div class="kaleido-segment s2"></div>
+        <div class="kaleido-segment s3"></div><div class="kaleido-segment s4"></div>
+    </div>
+    <div class="animation-container" id="anim32"><h2>32. Liquid Distortion Simulation</h2></div>
+    <div class="animation-container" id="anim33"><h2>33. Circuit Board Traces</h2>
+        <div class="trace-h th1"></div><div class="trace-h th2"></div><div class="trace-h th3"></div>
+        <div class="trace-v tv1"></div><div class="trace-v tv2"></div>
+    </div>
+    <div class="animation-container" id="anim34"><h2>34. Hypnotic Spiral</h2></div>
+    <div class="animation-container" id="anim35"><h2>35. Falling Characters Rain (Symbols)</h2>
+         <div class="char-col cc1">★☆✦✧✩✪✫✬✭</div><div class="char-col cc2">♫♪♬♩♭♯♮🎼</div>
+         <div class="char-col cc3">αβγδεζηθικλ</div><div class="char-col cc4">♲♺♻️<0xF0><0x9F><0xA7><0xB3>🧬⚛️</div>
+         <div class="char-col cc5">♚♛♜♝♞♟︎♔♕♖♗♘♙</div><div class="char-col cc6">←↑→↓↔↕↖↗↘↙</div>
+    </div>
+    <div class="animation-container" id="anim36"><h2>36. Complex Clip-Path Transition</h2></div>
+    <div class="animation-container" id="anim37"><h2>37. Layered Glass Panels (Backdrop Filter)</h2></div>
+    <div class="animation-container" id="anim38"><h2>38. Animated Pixel Dissolve</h2></div>
+    <div class="animation-container" id="anim39"><h2>39. Sound Wave Visualization (Sim)</h2>
+        <div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="bar b4"></div><div class="bar b5"></div>
+        <div class="bar b6"></div><div class="bar b7"></div><div class="bar b8"></div><div class="bar b9"></div><div class="bar b10"></div>
+        <div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="bar b4"></div><div class="bar b5"></div>
+    </div>
+    <div class="animation-container" id="anim40"><h2>40. Aurora Borealis Effect</h2></div>
+
+    <button id="back-to-top" onclick="scrollToTop()">Top</button>
+
+    <script>
+        window.onscroll = function() {
+            var btn = document.getElementById('back-to-top');
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                btn.style.display = 'block';
+            } else {
+                btn.style.display = 'none';
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+    </script>
+</body>
+</html>

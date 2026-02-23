@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Transition Simulation</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .page {
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            min-height: 300px; /* Give pages some height */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+            /* --- Transition Styles --- */
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            position: absolute; /* Allow pages to overlap during transition */
+            width: calc(100% - 40px); /* Account for body padding */
+            max-width: 800px; /* Max width for content */
+            left: 20px; /* Account for body padding */
+        }
+
+        /* State when page is exiting */
+        .page.exiting {
+            opacity: 0;
+            transform: translateY(20px); /* Move down slightly */
+            pointer-events: none; /* Disable interaction */
+        }
+
+        /* State when page is entering (initially hidden) */
+        .page.entering {
+            opacity: 0;
+            transform: translateY(-20px); /* Start slightly up */
+            pointer-events: none;
+        }
+
+        /* State when page is active (after entering animation) */
+        .page.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Hide non-active pages completely (use visibility or display if preferred) */
+        .page:not(.active):not(.entering):not(.exiting) {
+             opacity: 0;
+             pointer-events: none;
+             position: absolute; /* Keep in layout flow but hidden */
+             visibility: hidden; /* More robust hiding */
+        }
+
+        /* Basic navigation styling */
+        nav {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        nav button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #eee;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        nav button:hover {
+            background-color: #ddd;
+        }
+        nav button.active-nav {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav id="navigation">
+        <button data-page="page1" class="active-nav">Page 1</button>
+        <button data-page="page2">Page 2</button>
+        <button data-page="page3">Page 3</button>
+    </nav>
+
+    <div id="page-container">
+        <div id="page1" class="page active">
+            <h1>Page 1 Content</h1>
+            <p>This is the initial page shown.</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, quibusdam.</p>
+        </div>
+
+        <div id="page2" class="page">
+            <h1>Page 2 Content</h1>
+            <p>This is the second page.</p>
+            <p>Consequuntur laudantium eius iste provident?</p>
+        </div>
+
+        <div id="page3" class="page">
+            <h1>Page 3 Content</h1>
+            <p>This is the third page.</p>
+            <p>Fugiat, repellendus asperiores. Quo, enim!</p>
+        </div>
+    </div>
+
+    <script>
+        const navigation = document.getElementById('navigation');
+        const pageContainer = document.getElementById('page-container');
+        const pages = pageContainer.querySelectorAll('.page');
+        const navButtons = navigation.querySelectorAll('button');
+        const animationDuration = 500; // Match CSS transition duration
+
+        let isTransitioning = false; // Prevent overlapping transitions
+
+        navigation.addEventListener('click', (event) => {
+            if (event.target.tagName === 'BUTTON' && !isTransitioning) {
+                const targetPageId = event.target.dataset.page;
+                const currentPage = pageContainer.querySelector('.page.active');
+                const targetPage = document.getElementById(targetPageId);
+
+                if (currentPage && targetPage && currentPage !== targetPage) {
+                    isTransitioning = true;
+
+                    // Update nav button active state
+                    navButtons.forEach(btn => btn.classList.remove('active-nav'));
+                    event.target.classList.add('active-nav');
+
+                    // Start exit animation for current page
+                    currentPage.classList.add('exiting');
+                    currentPage.classList.remove('active');
+
+                    // Prepare target page for entry
+                    targetPage.classList.add('entering');
+                     // Force reflow/repaint before adding 'active' for entry animation
+                    void targetPage.offsetWidth;
+
+
+                    // After exit animation duration, remove exiting state and start entry
+                    setTimeout(() => {
+                        currentPage.classList.remove('exiting');
+                        currentPage.style.visibility = 'hidden'; // Hide completely after exit
+
+                        targetPage.style.visibility = 'visible'; // Make visible before entry
+                        targetPage.classList.remove('entering');
+                        targetPage.classList.add('active');
+
+                        // Reset transitioning flag after entry animation completes
+                        setTimeout(() => {
+                            isTransitioning = false;
+                        }, animationDuration);
+
+                    }, animationDuration);
+                }
+            }
+        });
+
+        // Ensure initial page is visible
+        document.addEventListener('DOMContentLoaded', () => {
+            pages.forEach(page => {
+                if (!page.classList.contains('active')) {
+                    page.style.visibility = 'hidden';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

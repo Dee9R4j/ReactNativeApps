@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shake Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f1f3f5;
+            margin: 0;
+        }
+
+        .shake-element {
+            width: 180px;
+            padding: 15px;
+            background-color: #fd7e14; /* Orange */
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.1rem;
+            cursor: pointer; /* Indicate it's clickable */
+            transition: background-color 0.3s ease; /* Smooth color transition */
+        }
+
+        /* Add shake animation on hover or via a class */
+        .shake-element:hover,
+        .shake-element.shake-now { /* Add .shake-now class with JS to trigger */
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            /* cubic-bezier provides a specific easing curve */
+            /* both: applies styles before/after animation */
+            transform: translate3d(0, 0, 0); /* Hardware acceleration hint */
+            backface-visibility: hidden; /* Prevent flickering */
+            perspective: 1000px; /* Improve rendering */
+        }
+
+        /* Define the shake animation */
+        @keyframes shake {
+          10%, 90% {
+            transform: translate3d(-1px, 0, 0);
+          }
+          20%, 80% {
+            transform: translate3d(2px, 0, 0);
+          }
+          30%, 50%, 70% {
+            transform: translate3d(-4px, 0, 0);
+          }
+          40%, 60% {
+            transform: translate3d(4px, 0, 0);
+          }
+        }
+    </style>
+</head>
+<body>
+    <div class="shake-element">Hover Me to Shake!</div>
+
+    <script>
+        // Optional: Trigger shake with a click
+        const shaker = document.querySelector('.shake-element');
+        shaker.addEventListener('click', () => {
+            shaker.classList.add('shake-now');
+            // Remove the class after animation finishes so it can be triggered again
+            setTimeout(() => {
+                shaker.classList.remove('shake-now');
+            }, 500); // Match animation duration (0.5s)
+        });
+    </script>
+</body>
+</html>

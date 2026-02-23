@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoom Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fafafa;
+            margin: 0;
+        }
+
+        .zoom-element {
+            width: 150px;
+            height: 100px;
+            background-color: #6c757d; /* Grey */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease-in-out; /* Animate the transform */
+            cursor: pointer;
+        }
+
+        /* Scale up on hover */
+        .zoom-element:hover {
+            transform: scale(1.2); /* Zoom in to 120% */
+            /* Use scale(0.8) for zoom out effect */
+        }
+    </style>
+</head>
+<body>
+    <div class="zoom-element">Zoom Me!</div>
+</body>
+</html>

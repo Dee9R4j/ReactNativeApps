@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable Box</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            /* Prevent text selection during drag */
+            user-select: none;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+ */
+            height: 100vh; /* Ensure body takes full height */
+            margin: 0; /* Remove default body margin */
+            overflow: hidden; /* Prevent scrollbars if box goes off-screen */
+            display: flex;
+            justify-content: center; /* Center box horizontally */
+            align-items: center; /* Center box vertically */
+            background-color: #f0f0f0; /* Light background */
+        }
+
+        #draggableBox {
+            width: 150px;
+            height: 150px;
+            background-color: #3498db; /* Nice blue color */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            border-radius: 10px; /* Rounded corners */
+            cursor: grab; /* Indicate it's draggable */
+            position: absolute; /* Crucial for positioning */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add some shadow */
+            /* Start position (centered initially by flexbox,
+               but JS will take over positioning) */
+            /* left: 50px; */
+            /* top: 50px; */
+        }
+
+        #draggableBox.dragging {
+            cursor: grabbing; /* Change cursor during drag */
+            opacity: 0.8; /* Slightly transparent during drag */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Larger shadow */
+        }
+    </style>
+</head>
+<body>
+
+<div id="draggableBox">Drag Me!</div>
+
+<script>
+    const draggableBox = document.getElementById('draggableBox');
+    let isDragging = false;
+    let offsetX, offsetY; // To store the mouse offset within the box
+
+    // --- Mouse Events ---
+
+    // When the mouse button is pressed down on the box
+    draggableBox.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        draggableBox.classList.add('dragging'); // Add dragging style
+
+        // Calculate the offset: mouse position - box's top-left corner
+        offsetX = e.clientX - draggableBox.offsetLeft;
+        offsetY = e.clientY - draggableBox.offsetTop;
+
+        // Prevent default browser drag behavior (e.g., dragging images)
+        e.preventDefault();
+    });
+
+    // When the mouse moves anywhere on the document
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return; // Only move if dragging
+
+        // Calculate new position
+        let newX = e.clientX - offsetX;
+        let newY = e.clientY - offsetY;
+
+        // Optional: Constrain movement within the viewport
+        const rect = draggableBox.parentElement.getBoundingClientRect(); // Get body/container bounds
+        newX = Math.max(0, Math.min(newX, rect.width - draggableBox.offsetWidth));
+        newY = Math.max(0, Math.min(newY, rect.height - draggableBox.offsetHeight));
+
+
+        // Update the box's position
+        draggableBox.style.left = `${newX}px`;
+        draggableBox.style.top = `${newY}px`;
+    });
+
+    // When the mouse button is released anywhere on the document
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            draggableBox.classList.remove('dragging'); // Remove dragging style
+        }
+    });
+
+    // --- Touch Events (for mobile) ---
+
+    // When a touch starts on the box
+    draggableBox.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        draggableBox.classList.add('dragging');
+
+        // Get the first touch point
+        const touch = e.touches[0];
+
+        // Calculate offset based on touch position
+        offsetX = touch.clientX - draggableBox.offsetLeft;
+        offsetY = touch.clientY - draggableBox.offsetTop;
+
+        // Prevent default touch behavior (e.g., scrolling)
+        // Note: This might interfere with scrolling if the box is large.
+        // Consider conditional prevention if needed.
+        // e.preventDefault();
+    }, { passive: false }); // Need passive: false to call preventDefault
+
+    // When a touch moves anywhere on the document
+    document.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+
+        // Get the first touch point
+        const touch = e.touches[0];
+
+        // Calculate new position
+        let newX = touch.clientX - offsetX;
+        let newY = touch.clientY - offsetY;
+
+        // Optional: Constrain movement within the viewport
+        const rect = draggableBox.parentElement.getBoundingClientRect(); // Get body/container bounds
+        newX = Math.max(0, Math.min(newX, rect.width - draggableBox.offsetWidth));
+        newY = Math.max(0, Math.min(newY, rect.height - draggableBox.offsetHeight));
+
+
+        // Update the box's position
+        draggableBox.style.left = `${newX}px`;
+        draggableBox.style.top = `${newY}px`;
+
+        // Prevent scrolling while dragging the box
+        e.preventDefault();
+
+    }, { passive: false }); // Need passive: false to call preventDefault
+
+    // When a touch ends anywhere on the document
+    document.addEventListener('touchend', () => {
+        if (isDragging) {
+            isDragging = false;
+            draggableBox.classList.remove('dragging');
+        }
+    });
+
+    // Initial centering (optional, if not using flexbox)
+    // window.onload = () => {
+    //     const rect = draggableBox.parentElement.getBoundingClientRect();
+    //     draggableBox.style.left = `${(rect.width - draggableBox.offsetWidth) / 2}px`;
+    //     draggableBox.style.top = `${(rect.height - draggableBox.offsetHeight) / 2}px`;
+    // };
+
+</script>
+
+</body>
+</html>

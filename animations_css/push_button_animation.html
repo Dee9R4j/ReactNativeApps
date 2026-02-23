@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Push Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e0e5ec; /* Light grey */
+            margin: 0;
+        }
+
+        .push-button {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            color: white;
+            background-color: #28a745; /* Green */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            outline: none;
+            /* Add a bottom border to simulate depth */
+            border-bottom: 5px solid #218838; /* Darker green */
+            transition: all 0.1s ease-in-out; /* Quick transition for press */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .push-button:hover {
+            background-color: #218838; /* Darken background slightly */
+        }
+
+        /* On active (click/press) */
+        .push-button:active {
+            transform: translateY(3px); /* Move button down */
+            border-bottom-width: 2px; /* Reduce bottom border */
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); /* Adjust shadow */
+        }
+    </style>
+</head>
+<body>
+    <button class="push-button">Push Me!</button>
+</body>
+</html>

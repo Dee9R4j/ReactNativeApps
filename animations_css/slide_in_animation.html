@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide In Animation</title>
+    <style>
+        body {
+            display: flex;
+            /* justify-content: center; */ /* Align to start for slide-in */
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e7f0ff;
+            margin: 0;
+            overflow-x: hidden; /* Prevent horizontal scrollbar during animation */
+        }
+
+        .slide-in-element {
+            width: 200px;
+            padding: 20px;
+            background-color: #007bff; /* Blue */
+            color: white;
+            text-align: center;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            transform: translateX(-150%); /* Start off-screen to the left */
+            opacity: 0; /* Start transparent */
+            animation: slideIn 1.5s ease-out forwards; /* Apply animation */
+            animation-delay: 0.5s; /* Start after a short delay */
+        }
+
+        /* Define the slide-in animation */
+        @keyframes slideIn {
+            from {
+                transform: translateX(-150%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(50px); /* End position (adjust as needed) */
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-in-element">Slide In From Left</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!-- filepath: /Users/deepraj/programming/webdevprojects/animated_input_focus.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animated Input Focus</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f8ff;
+        margin: 0;
+      }
+      .input-wrapper {
+        position: relative;
+        width: 250px;
+      }
+      .input-field {
+        width: 100%;
+        padding: 10px 0;
+        border: none;
+        border-bottom: 2px solid #ccc;
+        background: transparent;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+      .input-label {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        color: #aaa;
+        font-size: 1rem;
+        pointer-events: none;
+        transition: all 0.3s ease;
+      }
+      .input-field:focus {
+        border-bottom-color: #007bff;
+      }
+      .input-field:focus + .input-label,
+      .input-field:valid + .input-label {
+        /* Move label up when focused or has value */
+        top: -15px;
+        font-size: 0.8rem;
+        color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="input-wrapper">
+      <input type="text" id="myInput" class="input-field" required />
+      <label for="myInput" class="input-label">Your Name</label>
+    </div>
+  </body>
+</html>

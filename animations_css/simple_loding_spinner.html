@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Loading Spinner</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .loader {
+            border: 8px solid #e0e0e0; /* Light grey border */
+            border-top: 8px solid #3498db; /* Blue color for the spinning part */
+            border-radius: 50%; /* Make it circular */
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite; /* Apply spin animation */
+        }
+
+        /* Define the spin animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg); /* Start angle */
+            }
+            100% {
+                transform: rotate(360deg); /* End angle (full circle) */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader"></div>
+</body>
+</html>
