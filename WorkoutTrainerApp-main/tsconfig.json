@@ -1,0 +1,19 @@
+// tsconfig.json
+{
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-native",
+    "typeRoots": ["./src/types"],
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "extends": "expo/tsconfig.base"
+}
