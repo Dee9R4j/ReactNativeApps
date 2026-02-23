@@ -1,0 +1,35 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    background-color: black;
+}
+#main-heading{
+    text-align: center;
+    color: aliceblue;
+}
+.boxes{
+    height: 200px;
+    width: 700px;
+    border: 5px solid white;
+    border-radius: 15px;
+    background-color: black;
+    margin: 15px;
+    text-align: center;
+    color: rgb(206, 180, 142);
+}
+.container{
+    display: flex;
+    height: 200px;
+    width: 700px;  
+}
+button{
+    flex-shrink: 2.5;
+}
+.hidden-content{
+    display: none;
+}
+.hidden-content.reveal-btn{
+    display: block;
+}

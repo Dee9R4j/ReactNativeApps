@@ -1,0 +1,45 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+button{
+    text-decoration: none;
+    padding: 25px 40px;
+    color: white;
+    font-size: 40px;
+    background-color: purple;
+    border-radius: 8px;
+    font-weight: bold;
+    letter-spacing: uppercase;
+    box-shadow: 0 14px 22px -7px rgba(0,0,0,0.4);
+        transition: background-color 0.2s;
+}
+button:hover{
+    animation: swing 0.5s;
+    background-color: #000066;
+}
+@keyframes swing {
+    0%{
+        transform: rotateZ(0deg) translate(0,0);
+    }
+    20%{
+        transform: rotateZ(20deg) translate(15px,-5px);
+    }
+    40%{
+        transform: rotateZ(10deg) translate(-15px,5px);
+    }
+    60%{
+        transform: rotateZ(11deg) translate(5px,-15px);
+    }
+    80%{
+        transform: rotateZ(0deg) translate(-5px,15px);
+    }
+}

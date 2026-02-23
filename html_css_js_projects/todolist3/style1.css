@@ -1,0 +1,234 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+body{
+    background: #000;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* making gradient border */
+.shadow{
+    position: relative;
+    top: -25vh;
+    margin: 200px auto 0;
+    min-width: 600px;
+    min-height: 300px; 
+    height: auto;
+    background: linear-gradient(0deg, #000, #262626);
+}
+.shadow::before, .shadow::after{
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000);
+    background-size: 400%;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -1;
+    animation: boxshadow 50s linear infinite;
+}
+.shadow::after{
+    filter:blur(20px);
+}
+@keyframes boxshadow{
+    0%{
+        background-position:0 0;
+    }
+    50%{
+        background-position:300% 0;
+    }
+    100%{
+        background-position:0 0;
+
+    }
+}
+
+/* this is for icon */
+.icon{
+    height: 70px;
+    width: 70px;
+    background:url(icon3.webp) center center/cover;
+    position: absolute;
+    top: -12%;
+    left: -5%;
+    border-radius: 50%;
+}
+
+
+/* **************** */
+#add-task-container{
+    width: 85%;
+    padding: 15px 10px;
+    background: black;
+    border-radius: 200px;
+    box-shadow: 0 0 5px;
+    display: flex;
+    margin-bottom: 50px;
+    margin-top: 75px;
+    justify-self: center;
+    box-shadow: 0 0 5px;
+}
+
+
+
+input{
+    flex: 5;
+    margin-left: 50px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    padding: 5px;
+    font-size: 1.5rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: azure;
+    font-weight: bold;
+    transition-property: all;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+}
+input:hover{
+    transform: scale(1.1);
+}
+
+/* gradinate button */
+#add-task{
+    padding: 0.25em 1em;
+    background-color: #161a20;
+    border: none;
+    color: #f0f0f0;
+    border-radius: 1000px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+
+    
+}
+#add-task::after{
+    content: '';
+    position: absolute;
+    height: 107%;
+    width: 102%;
+    border-radius: 1000px;
+    background-image: linear-gradient(to bottom right, #008cff, #e100ff);
+    z-index: -1;
+}
+#add-task:hover{
+    z-index: 0;
+    box-shadow: 40px 0 100px #008cff9c, -40px 0 100px #e100ffb0;
+}
+
+/* ------------------ */
+.task{
+    width: 80%;
+    background-color: black;
+    color: azure;
+    border-radius: 20px;
+    box-shadow: 0 0 3px;
+    padding: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    justify-self: center;
+    cursor: pointer;
+}
+.task li{
+    list-style: none;
+    flex: 4;
+    padding: 5px;
+    font-size: 1.3rem;
+    margin: 10px;
+}
+
+.task button{
+    flex: 1;
+    border-radius: 50%;
+    background-color: black;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+
+/* ---------------- */
+.task .checkTask{
+    color: grey;
+    margin-right: 5px;
+    border: 2px solid black;
+    font-size: 1.5rem;
+    transition-property: all;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+}
+.task .checkTask:hover{
+    background-color: black;
+    color: grey;
+    transform: scale(1.5);
+}
+.task .deleteTask{
+    color: red;
+    margin-right: 5px;
+    border: 2px solid black;
+    font-size: 1.3rem;
+    box-shadow: 0 14px 22px -7px rgba(0,0,0,0.4);
+    transition: background-color 0.3s;
+}
+.task .deleteTask:hover{
+    background-color: red;
+    color: black;
+    animation: swing 0.5s;
+}
+
+@keyframes swing {
+    0%{
+        transform: translate(0,0);
+    }
+    10%{
+        transform:  translate(3px,0px);
+    }
+    20%{
+        transform:  translate(0px,0px);
+    }
+    30%{
+        transform:  translate(-3px,0px);
+    }
+    40%{
+        transform: translate(0,0);
+    }
+    50%{
+        transform: translate(+3px,0);
+    }
+    60%{
+        transform:  translate(0px,0px);
+    }
+    70%{
+        transform:  translate(-3px,0px);
+    }
+    80%{
+        transform:  translate(0px,0px);
+    }
+    90%{
+        transform: translate(+3px,0px);
+    }
+    100%{
+        transform: translate(0,0);
+    }
+}
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.2;
+}
+
