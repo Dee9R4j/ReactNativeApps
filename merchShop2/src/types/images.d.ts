@@ -1,0 +1,25 @@
+// images.d.ts
+declare module '*.jpg' {
+  const value: number; // Or any if you use it differently
+  export default value;
+}
+
+declare module '*.jpeg' {
+  const value: number;
+  export default value;
+}
+
+declare module '*.png' {
+  const value: number;
+  export default value;
+}
+
+declare module '*.gif' {
+  const value: number;
+  export default value;
+}
+
+declare module '*.svg' {
+  const value: any; // Or specific SVG type if you use SVGR
+  export default value;
+}
