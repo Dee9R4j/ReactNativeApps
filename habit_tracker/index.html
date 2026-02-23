@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Habit Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Base Styles --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        
+        /* --- Print-Specific Styles --- */
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: #ffffff;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .printable-area {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: none;
+            }
+            .calendar-day {
+                /* REMOVED fixed height to allow content to determine size */
+                page-break-inside: avoid; /* Prevent a single day from splitting across pages */
+                padding: 0.25rem !important;
+            }
+            .habit-item {
+                font-size: 0.65rem !important; /* Optimized smaller font for print */
+                line-height: 1.2; /* Tighter line height for print */
+            }
+            .checkbox {
+                 width: 0.7rem !important;
+                 height: 0.7rem !important;
+                 margin-right: 0.25rem !important;
+            }
+        }
+
+        /* --- Page Layout for Printing --- */
+        @page {
+            size: A4 landscape;
+            margin: 0.75cm;
+        }
+
+        /* --- Custom Styles for UI Elements --- */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 1px;
+            background-color: #cbd5e1; /* slate-300 */
+            border: 1px solid #cbd5e1;
+        }
+        .calendar-day {
+            background-color: #ffffff;
+            min-height: 140px; /* Use min-height for screen view */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the top */
+            padding: 0.5rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .calendar-day:not(.empty-day):hover {
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .empty-day {
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        .habit-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem; 
+            color: #475569; /* slate-600 */
+        }
+        .checkbox {
+            width: 0.875rem;
+            height: 0.875rem;
+            border: 1px solid #94a3b8; /* slate-400 */
+            margin-right: 0.375rem;
+            flex-shrink: 0;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
+        <main class="w-full max-w-7xl mx-auto">
+            <!-- Controls Section -->
+            <div class="no-print bg-white p-6 rounded-2xl shadow-lg mb-8 border border-slate-200">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-5">
+                     <h1 class="text-3xl font-bold text-slate-800">Habit Tracker</h1>
+                     <p class="text-slate-500 mt-1 md:mt-0">Create and print your personal tracker</p>
+                </div>
+               
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Habits Input -->
+                    <div class="lg:col-span-1">
+                        <label for="habits-input" class="block text-sm font-semibold text-slate-700 mb-2">Your Habits (one per line)</label>
+                        <textarea id="habits-input" rows="5" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" placeholder="e.g., Morning Meditation">{{'Meditated\nGym\n4h Course Study\n4h Dev'}}</textarea>
+                    </div>
+                    <!-- Settings & Actions -->
+                    <div class="lg:col-span-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                             <div>
+                                <label for="month-select" class="block text-sm font-semibold text-slate-700 mb-2">Month</label>
+                                <select id="month-select" class="w-full p-3 bg-white border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"></select>
+                            </div>
+                            <div>
+                                <label for="year-input" class="block text-sm font-semibold text-slate-700 mb-2">Year</label>
+                                <input type="number" id="year-input" class="w-full p-3 border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                             <button id="generate-btn" class="w-full flex items-center justify-center bg-indigo-600 text-white px-5 py-3 rounded-lg shadow-md font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-105">
+                                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+                                Generate Calendar
+                            </button>
+                            <button onclick="window.print()" class="w-full flex items-center justify-center bg-slate-700 text-white px-5 py-3 rounded-lg shadow-md font-semibold hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-all transform hover:scale-105">
+                                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                                Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Display Section -->
+            <div id="calendar-container" class="bg-white p-6 rounded-2xl shadow-lg printable-area border border-slate-200">
+                <!-- Calendar will be generated here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const monthSelect = document.getElementById('month-select');
+            const yearInput = document.getElementById('year-input');
+            const habitsInput = document.getElementById('habits-input');
+            const generateBtn = document.getElementById('generate-btn');
+            const calendarContainer = document.getElementById('calendar-container');
+
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const dayAbbreviations = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+            function initialize() {
+                const today = new Date();
+                monthNames.forEach((name, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = name;
+                    monthSelect.appendChild(option);
+                });
+                monthSelect.value = today.getMonth();
+                yearInput.value = today.getFullYear();
+                generateCalendar();
+            }
+
+            function generateCalendar() {
+                const month = parseInt(monthSelect.value);
+                const year = parseInt(yearInput.value);
+                const habits = habitsInput.value.split('\n').filter(h => h.trim() !== '');
+
+                if (isNaN(year) || year < 1000) {
+                    calendarContainer.innerHTML = `<p class="text-red-500 text-center">Please enter a valid year.</p>`;
+                    return;
+                }
+
+                calendarContainer.innerHTML = '';
+
+                const header = document.createElement('div');
+                header.className = 'flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6';
+                header.innerHTML = `
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-800">${monthNames[month]}</h2>
+                        <p class="text-xl text-slate-500">${year}</p>
+                    </div>
+                    <div class="flex flex-wrap gap-4 mt-4 sm:mt-0">
+                        <div class="flex items-center"><div class="w-5 h-5 rounded-md bg-green-400 border border-slate-300 mr-2"></div><span class="text-xs text-slate-600">All Done</span></div>
+                        <div class="flex items-center"><div class="w-5 h-5 rounded-md bg-yellow-300 border border-slate-300 mr-2"></div><span class="text-xs text-slate-600">Some Done</span></div>
+                        <div class="flex items-center"><div class="w-5 h-5 rounded-md bg-red-400 border border-slate-300 mr-2"></div><span class="text-xs text-slate-600">Needs Work</span></div>
+                    </div>
+                `;
+                calendarContainer.appendChild(header);
+
+                const gridWrapper = document.createElement('div');
+                calendarContainer.appendChild(gridWrapper);
+
+                const dayLabels = document.createElement('div');
+                dayLabels.className = 'grid grid-cols-7 text-center font-semibold text-slate-600 mb-2 text-sm';
+                dayAbbreviations.forEach(day => {
+                    const dayLabel = document.createElement('div');
+                    dayLabel.textContent = day;
+                    dayLabels.appendChild(dayLabel);
+                });
+                gridWrapper.appendChild(dayLabels);
+
+                const calendarGrid = document.createElement('div');
+                calendarGrid.className = 'calendar-grid rounded-lg overflow-hidden';
+                gridWrapper.appendChild(calendarGrid);
+
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                for (let i = 0; i < firstDayOfMonth; i++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.className = 'empty-day';
+                    calendarGrid.appendChild(emptyCell);
+                }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayCell = document.createElement('div');
+                    dayCell.className = 'calendar-day';
+                    
+                    const currentDate = new Date(year, month, day);
+                    const dayAbbr = dayAbbreviations[currentDate.getDay()];
+
+                    let habitsHtml = '';
+                    if (habits.length > 0) {
+                        habits.forEach(habit => {
+                            habitsHtml += `<div class="habit-item"><div class="checkbox"></div><span>${habit}</span></div>`;
+                        });
+                    }
+
+                    dayCell.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <span class="text-sm font-bold text-slate-700">${day}</span>
+                            <span class="text-xs text-slate-400 font-medium">${dayAbbr}</span>
+                        </div>
+                        <div class="space-y-1 mt-1">
+                            ${habitsHtml}
+                        </div>
+                    `;
+                    calendarGrid.appendChild(dayCell);
+                }
+            }
+
+            generateBtn.addEventListener('click', generateCalendar);
+            initialize();
+        });
+    </script>
+</body>
+</html>
