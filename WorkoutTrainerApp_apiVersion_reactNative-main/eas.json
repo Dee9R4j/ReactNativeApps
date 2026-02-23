@@ -1,0 +1,47 @@
+{
+  "build": {
+    "development": {
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug",
+        "distribution": "internal"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "API_KEY": "@api_key"
+      },
+      "channel": "development",
+      "credentialsSource": "local"
+    },
+    "production-apk": {
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease",
+        "distribution": "internal"
+      },
+      "env": {
+        "API_KEY": "@api_key"
+      },
+      "channel": "production",
+      "credentialsSource": "remote"
+    },
+    "production-aab": {
+      "android": {
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease",
+        "distribution": "store"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_KEY": "@api_key"
+      },
+      "channel": "production",
+      "credentialsSource": "remote"
+    }
+  },
+  "cli": {
+    "appVersionSource": "remote",
+    "promptToConfigurePushNotifications": false
+  }
+}
