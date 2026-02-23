@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    scroll-behavior: smooth; 
+}
+
+
+.carousel {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    margin: auto;
+    top: 0px;
+    background-color: #f5f4ee;
+    scroll-behavior: smooth;
+    will-change: transform;
+}
+
+.slides-container {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+.slide {
+    min-width: 100%;
+    text-align: center;
+    background: lightgray;
+    padding: 50px 0;
+    font-size: 1.5rem;
+    height: 500px;
+    border-radius: 0 0 15px 15px;
+}
+
+
+.slide:nth-child(1) { background: url("../assets/images/10.1.jpg") center center/cover; }
+.slide:nth-child(2) { background: url("../assets/images/9.3.jpg") center center/cover; }
+.slide:nth-child(3) { background: url("../assets/images/5.1.jpg") center center/cover; }
+.slide:nth-child(4) { background: url("../assets/images/6.2.jpg") center center/cover; }
+.slide:nth-child(5) { background: url("../assets/images/1.1.jpg") center center/cover; }
+.slide:nth-child(6) { background: url("../assets/images/4.1.jpg") center center/cover; }
+
+
+.carousel-dots {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    margin: 5px;
+    background: gray;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background: black;
+}
+
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px;
+    gap: 10px;
+    height: 90vh;
+    overflow-y: auto; 
+    scroll-behavior: smooth;
+    will-change: scroll-position;
+}
+
+.card-container::-webkit-scrollbar {
+    width: 5px;
+}
+
+.card-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.card-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

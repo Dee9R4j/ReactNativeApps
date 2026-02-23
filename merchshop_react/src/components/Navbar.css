@@ -1,0 +1,63 @@
+
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: transparent;
+    padding: 10px 20px;
+    z-index: 2;
+    position: fixed;
+    width: 100vw;
+  }
+  
+  .menu-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    position: relative;
+    left: -15px;
+  }
+  
+  .search-container {
+    flex-grow: 1;
+    margin: 0 15px;
+    width: 50%;
+  }
+  
+  .search-container input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    outline: none;
+    position: relative;
+    left: -27px;
+    background: transparent;
+
+  }
+  
+
+  .icons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .icon {
+    font-size: 22px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .icon:hover {
+    transform: scale(1.1);
+  }
+  
+  .wishlist {
+    color: red;
+  }
+  
+  .cart {
+    color: black;
+  }
+  

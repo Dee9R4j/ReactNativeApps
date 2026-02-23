@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  scroll-behavior: smooth;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 10px;
+  gap: 10px;
+  height: 90vh;
+  overflow-y: auto; 
+  scroll-behavior: smooth;
+  will-change: scroll-position;
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+
+.card-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.card-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #888, #555);
+  border-radius: 10px;
+}
+
+.card-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #555, #222);
+}
+
+
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.card {
+  width: 48%; 
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 10px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+.card-image {
+  width: 100%;
+  height: 100px;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+
+.card:hover .card-image {
+  transform: scale(1.08);
+}
+
+
+.card-info {
+  padding: 10px 0;
+}
+
+
+.card-name {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+
+.card-price {
+  font-weight: bold;
+  color: green;
+  font-size: 1.1rem;
+}

@@ -1,0 +1,37 @@
+.card {
+  width: calc(50% - 10px);
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-image {
+  width: 100%;  
+  height: auto; 
+  max-height: 250px; 
+  border-radius: 5px;
+  object-fit: contain; 
+}
+
+.card-info {
+  padding: 10px 0;
+}
+
+.card-name {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.card-price {
+  font-weight: bold;
+  color: green;
+  font-size: 1.1rem;
+}

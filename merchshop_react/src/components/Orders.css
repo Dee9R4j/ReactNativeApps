@@ -1,0 +1,154 @@
+.orders-container {
+    position: relative;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s ease;
+  }
+  
+  .close-button:hover {
+    color: #333;
+  }
+  
+  .empty-message {
+    text-align: center;
+    color: #666;
+    padding: 40px 0;
+    font-size: 1.1em;
+  }
+  
+  .order-item {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease;
+  }
+  
+  .order-item:hover {
+    transform: translateY(-2px);
+  }
+  
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding-right: 40px;
+  }
+  
+  .order-header-left h3 {
+    color: #2c3e50;
+    margin-bottom: 5px;
+  }
+  
+  .order-date {
+    color: #7f8c8d;
+    font-size: 0.9em;
+  }
+  
+  .delete-order-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #ffebee;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .delete-order-button:hover {
+    background: #ffcdd2;
+    transform: scale(1.1);
+  }
+  
+  .delete-order-button:active {
+    transform: scale(0.95);
+  }
+  
+  .delete-order-button svg {
+    color: #d32f2f;
+  }
+  
+  .delete-order-button:hover svg {
+    color: #b71c1c;
+  }
+  
+  .customer-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .customer-info p {
+    margin: 5px 0;
+    color: #34495e;
+  }
+  
+  .items-heading {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+  }
+  
+  .order-product {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: background 0.3s ease;
+  }
+  
+  .order-product:hover {
+    background: #f8f9fa;
+  }
+  
+  .order-image {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-right: 15px;
+    border-radius: 6px;
+  }
+  
+  .product-info {
+    flex-grow: 1;
+  }
+  
+  .product-name {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 5px;
+  }
+  
+  .product-meta {
+    display: flex;
+    gap: 15px;
+    color: #7f8c8d;
+    font-size: 0.9em;
+  }
+  
+  .product-meta p {
+    margin: 0;
+  }
