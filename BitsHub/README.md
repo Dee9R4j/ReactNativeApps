@@ -107,17 +107,17 @@ This section renders all screenshots on GitHub:
 
 ### App Screens
 
-| Drawer                               | Events                               | Event Details                                      |
+| Login                                | Events                               | Event Details                                      |
 | ------------------------------------ | ------------------------------------ | -------------------------------------------------- |
-| ![Drawer](screenshots/01-drawer.png) | ![Events](screenshots/02-events.png) | ![Event Details](screenshots/03-event-details.png) |
+| ![Drawer](screenshots/07-login.png) | ![Events](screenshots/02-events.png) | ![Event Details](screenshots/03-event-details.png) |
 
 | My Events                                  | My Event Details                                         | QR                           |
 | ------------------------------------------ | -------------------------------------------------------- | ---------------------------- |
 | ![My Events](screenshots/04-my-events.png) | ![My Event Details](screenshots/05-my-event-details.png) | ![QR](screenshots/06-qr.png) |
 
-| Login                              | Admin Home                                   | Admin Event                                    |
+| Drawer                             | Admin Home                                   | Admin Event                                    |
 | ---------------------------------- | -------------------------------------------- | ---------------------------------------------- |
-| ![Login](screenshots/07-login.png) | ![Admin Home](screenshots/08-admin-home.png) | ![Admin Event](screenshots/09-admin-event.png) |
+| ![Login](screenshots/01-drawer.png) | ![Admin Home](screenshots/08-admin-home.png) | ![Admin Event](screenshots/09-admin-event.png) |
 
 <p align="center">
   <img src="screenshots/10-admin-scan.png" alt="Admin Scan" width="300" />
