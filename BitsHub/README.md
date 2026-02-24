@@ -119,9 +119,9 @@ This section renders all screenshots on GitHub:
 | ---------------------------------- | -------------------------------------------- | ---------------------------------------------- |
 | ![Login](screenshots/07-login.png) | ![Admin Home](screenshots/08-admin-home.png) | ![Admin Event](screenshots/09-admin-event.png) |
 
-| Admin Scan                                   |
-| -------------------------------------------- |
-| ![Admin Scan](screenshots/10-admin-scan.png) |
+<p align="center">
+  <img src="screenshots/10-admin-scan.png" alt="Admin Scan" width="300" />
+</p>
 
 ## Useful Commands
 
