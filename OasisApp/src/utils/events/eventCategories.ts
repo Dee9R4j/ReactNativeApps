@@ -1,0 +1,1 @@
+export const eventData = ["Space", "Tech", "Music", "Art", "Sports", "Fashion", "Coding"];

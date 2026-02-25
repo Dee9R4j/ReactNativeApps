@@ -1,0 +1,338 @@
+[
+  {
+    "libraryName": "@expo/vector-icons",
+    "version": "14.1.0",
+    "_license": "MIT",
+    "_description": "Built-in support for popular icon fonts and the toolchain to create new ones.",
+    "homepage": "https://github.com/expo/vector-icons"
+  },
+  {
+    "libraryName": "@react-native-community/netinfo",
+    "version": "11.4.1",
+    "_license": "MIT",
+    "_description": "React Native Network Info API for Android & iOS",
+    "homepage": "https://github.com/react-native-netinfo/react-native-netinfo"
+  },
+  {
+    "libraryName": "@react-native-firebase/app",
+    "version": "22.4.0",
+    "_license": "Apache-2.0",
+    "_description": "React Native Firebase - Core App Module",
+    "homepage": "https://rnfirebase.io/"
+  },
+  {
+    "libraryName": "@react-native-google-signin/google-signin",
+    "version": "15.0.0",
+    "_license": "MIT",
+    "_description": "Google Sign-in for your React Native applications",
+    "homepage": "https://github.com/react-native-google-signin/google-signin"
+  },
+  {
+    "libraryName": "@react-navigation/drawer",
+    "version": "7.3.9",
+    "_license": "MIT",
+    "_description": "Drawer navigator for React Navigation",
+    "homepage": "https://reactnavigation.org/docs/drawer-navigator/"
+  },
+  {
+    "libraryName": "@react-navigation/material-top-tabs",
+    "version": "7.3.6",
+    "_license": "MIT",
+    "_description": "Material top tab navigator for React Navigation",
+    "homepage": "https://reactnavigation.org/docs/material-top-tab-navigator/"
+  },
+  {
+    "libraryName": "@react-navigation/native",
+    "version": "7.1.6",
+    "_license": "MIT",
+    "_description": "React Navigation core utilities and components for React Native",
+    "homepage": "https://reactnavigation.org/"
+  },
+  {
+    "libraryName": "@types/uuid",
+    "version": "10.0.0",
+    "_license": "MIT",
+    "_description": "TypeScript definitions for uuid",
+    "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped"
+  },
+  {
+    "libraryName": "axios",
+    "version": "1.10.0",
+    "_license": "MIT",
+    "_description": "Promise based HTTP client for the browser and node.js",
+    "homepage": "https://axios-http.com"
+  },
+  {
+    "libraryName": "expo",
+    "version": "53.0.20",
+    "_license": "MIT",
+    "_description": "The Expo SDK",
+    "homepage": "https://github.com/expo/expo"
+  },
+  {
+    "libraryName": "expo-constants",
+    "version": "17.1.7",
+    "_license": "MIT",
+    "_description": "Provides system information that remains constant throughout the lifetime of your app",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/constants/"
+  },
+  {
+    "libraryName": "expo-dev-client",
+    "version": "5.2.4",
+    "_license": "MIT",
+    "_description": "A development build of your app",
+    "homepage": "https://docs.expo.dev/clients/introduction/"
+  },
+  {
+    "libraryName": "expo-device",
+    "version": "7.1.4",
+    "_license": "MIT",
+    "_description": "Provides specific information about the device running the application",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/device/"
+  },
+  {
+    "libraryName": "expo-font",
+    "version": "13.3.2",
+    "_license": "MIT",
+    "_description": "Load fonts at runtime and use them in React Native components",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/font/"
+  },
+  {
+    "libraryName": "expo-linking",
+    "version": "7.1.7",
+    "_license": "MIT",
+    "_description": "Provides utilities for your app to interact with other installed apps using deep links",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/linking/"
+  },
+  {
+    "libraryName": "expo-local-authentication",
+    "version": "16.0.5",
+    "_license": "MIT",
+    "_description": "Provides an API for FaceID and TouchID (iOS) and the Fingerprint API (Android)",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/local-authentication/"
+  },
+  {
+    "libraryName": "expo-notifications",
+    "version": "0.31.4",
+    "_license": "MIT",
+    "_description": "Provides an API to fetch push notification tokens and to present, schedule, receive and respond to notifications",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/notifications/"
+  },
+  {
+    "libraryName": "expo-router",
+    "version": "5.1.4",
+    "_license": "MIT",
+    "_description": "File-based router for universal React Native apps",
+    "homepage": "https://expo.github.io/router"
+  },
+  {
+    "libraryName": "expo-secure-store",
+    "version": "14.2.3",
+    "_license": "MIT",
+    "_description": "Provides a way to encrypt and securely store key-value pairs locally on the device",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/securestore/"
+  },
+  {
+    "libraryName": "expo-splash-screen",
+    "version": "0.30.10",
+    "_license": "MIT",
+    "_description": "Provides utilities to control the display of the native splash screen",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/splash-screen/"
+  },
+  {
+    "libraryName": "expo-sqlite",
+    "version": "15.2.14",
+    "_license": "MIT",
+    "_description": "Provides access to a database that can be queried through a WebSQL-like API",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/sqlite/"
+  },
+  {
+    "libraryName": "expo-status-bar",
+    "version": "2.2.3",
+    "_license": "MIT",
+    "_description": "Provides the same interface as the React Native StatusBar API",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/status-bar/"
+  },
+  {
+    "libraryName": "expo-system-ui",
+    "version": "5.0.10",
+    "_license": "MIT",
+    "_description": "Provides access to system UI styling, such as background color behind status/navigation bars",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/system-ui/"
+  },
+  {
+    "libraryName": "expo-updates",
+    "version": "0.28.17",
+    "_license": "MIT",
+    "_description": "Fetches and manages updates to your app stored on a remote server",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/updates/"
+  },
+  {
+    "libraryName": "expo-web-browser",
+    "version": "14.2.0",
+    "_license": "MIT",
+    "_description": "Provides access to the system's web browser",
+    "homepage": "https://docs.expo.dev/versions/latest/sdk/webbrowser/"
+  },
+  {
+    "libraryName": "firebase",
+    "version": "12.0.0",
+    "_license": "Apache-2.0",
+    "_description": "Firebase JavaScript library for web and Node.js",
+    "homepage": "https://firebase.google.com/"
+  },
+  {
+    "libraryName": "fuse.js",
+    "version": "7.1.0",
+    "_license": "Apache-2.0",
+    "_description": "Lightweight fuzzy-search library",
+    "homepage": "http://fusejs.io"
+  },
+  {
+    "libraryName": "react",
+    "version": "19.0.0",
+    "_license": "MIT",
+    "_description": "React is a JavaScript library for building user interfaces.",
+    "homepage": "https://reactjs.org/"
+  },
+  {
+    "libraryName": "react-dom",
+    "version": "19.0.0",
+    "_license": "MIT",
+    "_description": "React package for working with the DOM.",
+    "homepage": "https://reactjs.org/"
+  },
+  {
+    "libraryName": "react-native",
+    "version": "0.79.5",
+    "_license": "MIT",
+    "_description": "A framework for building native apps using React",
+    "homepage": "https://github.com/facebook/react-native"
+  },
+  {
+    "libraryName": "react-native-gesture-handler",
+    "version": "2.24.0",
+    "_license": "MIT",
+    "_description": "Experimental implementation of a new declarative API for gesture handling in react-native",
+    "homepage": "https://github.com/software-mansion/react-native-gesture-handler"
+  },
+  {
+    "libraryName": "react-native-mmkv",
+    "version": "3.3.0",
+    "_license": "MIT",
+    "_description": "The fastest key/value storage for React Native",
+    "homepage": "https://github.com/mrousavy/react-native-mmkv"
+  },
+  {
+    "libraryName": "react-native-pager-view",
+    "version": "6.7.1",
+    "_license": "MIT",
+    "_description": "React Native wrapper for the Android ViewPager and iOS UIPageViewController",
+    "homepage": "https://github.com/callstack/react-native-pager-view"
+  },
+  {
+    "libraryName": "react-native-paper",
+    "version": "5.14.5",
+    "_license": "MIT",
+    "_description": "Material Design for React Native",
+    "homepage": "https://callstack.github.io/react-native-paper/"
+  },
+  {
+    "libraryName": "react-native-reanimated",
+    "version": "3.17.4",
+    "_license": "MIT",
+    "_description": "React Native's Animated library reimplemented",
+    "homepage": "https://github.com/software-mansion/react-native-reanimated"
+  },
+  {
+    "libraryName": "react-native-safe-area-context",
+    "version": "5.4.0",
+    "_license": "MIT",
+    "_description": "A flexible way to handle safe area insets in JS",
+    "homepage": "https://github.com/th3rdwave/react-native-safe-area-context"
+  },
+  {
+    "libraryName": "react-native-screens",
+    "version": "4.11.1",
+    "_license": "MIT",
+    "_description": "Native navigation primitives for your React Native app",
+    "homepage": "https://github.com/software-mansion/react-native-screens"
+  },
+  {
+    "libraryName": "react-native-tab-view",
+    "version": "3.5.2",
+    "_license": "MIT",
+    "_description": "A cross-platform Tab View component for React Native",
+    "homepage": "https://github.com/satya164/react-native-tab-view"
+  },
+  {
+    "libraryName": "react-native-web",
+    "version": "0.20.0",
+    "_license": "MIT",
+    "_description": "React Native for Web",
+    "homepage": "https://github.com/necolas/react-native-web"
+  },
+  {
+    "libraryName": "react-native-webview",
+    "version": "13.13.5",
+    "_license": "MIT",
+    "_description": "React Native WebView component for iOS, Android, macOS, and Windows",
+    "homepage": "https://github.com/react-native-webview/react-native-webview"
+  },
+  {
+    "libraryName": "uuid",
+    "version": "11.1.0",
+    "_license": "MIT",
+    "_description": "RFC4122 (v1, v4, and v5) UUIDs",
+    "homepage": "https://github.com/uuidjs/uuid"
+  },
+  {
+    "libraryName": "zustand",
+    "version": "5.0.6",
+    "_license": "MIT",
+    "_description": "🐻 Bear necessities for state management in React",
+    "homepage": "https://github.com/pmndrs/zustand"
+  },
+  {
+    "libraryName": "@babel/core",
+    "version": "7.25.2",
+    "_license": "MIT",
+    "_description": "Babel compiler core.",
+    "homepage": "https://babel.dev/docs/en/babel-core"
+  },
+  {
+    "libraryName": "@types/react",
+    "version": "19.0.10",
+    "_license": "MIT",
+    "_description": "TypeScript definitions for React",
+    "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped"
+  },
+  {
+    "libraryName": "jest",
+    "version": "29.2.1",
+    "_license": "MIT",
+    "_description": "Delightful JavaScript Testing Framework with a focus on simplicity",
+    "homepage": "https://jestjs.io/"
+  },
+  {
+    "libraryName": "jest-expo",
+    "version": "53.0.9",
+    "_license": "MIT",
+    "_description": "Jest preset for Expo projects",
+    "homepage": "https://github.com/expo/expo/tree/main/packages/jest-expo"
+  },
+  {
+    "libraryName": "react-test-renderer",
+    "version": "19.0.0",
+    "_license": "MIT",
+    "_description": "React package for snapshot testing.",
+    "homepage": "https://reactjs.org/"
+  },
+  {
+    "libraryName": "typescript",
+    "version": "5.8.3",
+    "_license": "Apache-2.0",
+    "_description": "TypeScript is a language for application scale JavaScript development",
+    "homepage": "https://www.typescriptlang.org/"
+  }
+]
